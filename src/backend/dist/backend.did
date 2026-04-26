@@ -1,0 +1,22 @@
+type Timestamp = int;
+type TestimonialId = nat;
+type Testimonial = 
+ record {
+   content: text;
+   id: TestimonialId;
+   name: text;
+   rating: nat;
+   role: text;
+   timestamp: Timestamp;
+ };
+service : {
+  deleteTestimonial: (id: TestimonialId) -> (bool);
+  editTestimonial: (id: TestimonialId, name: text, role: text, content: 
+   text, rating: nat) -> (bool);
+  getAdmin: () -> (opt principal) query;
+  getTestimonials: () -> (vec Testimonial) query;
+  isAdmin: () -> (bool) query;
+  setAdmin: () -> ();
+  submitTestimonial: (name: text, role: text, content: text, rating: 
+   nat) -> (TestimonialId);
+}

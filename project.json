@@ -1,0 +1,26 @@
+{
+  "overview": "A modern, professional portfolio website for Rupika Kannan, Communicative English Tutor based in Dharmapuri, India. Showcases teaching experience, skills, services, gallery, and testimonials with smooth animations, dark green/white/grey palette, and conversion-focused CTAs including a WhatsApp chat button and demo class booking form.",
+  "features": [
+    "Hero section with profile image, tagline, and Book a Demo CTA",
+    "About, Experience, Skills, and Services sections",
+    "Image gallery with lightbox modal",
+    "Rotating testimonials carousel",
+    "Contact form with click-to-call and social links",
+    "Floating WhatsApp chat button",
+    "Demo class booking modal",
+    "Smooth scroll navigation with sticky navbar",
+    "Mobile-responsive with hamburger menu",
+    "SEO optimized for English tutoring in Dharmapuri"
+  ],
+  "category": "portfolio",
+  "tags": [
+    "portfolio",
+    "education",
+    "english-tutor",
+    "teaching",
+    "esl",
+    "phonics",
+    "landing-page"
+  ],
+  "last_updated": "2026-04-21T05:53:20.787Z"
+}

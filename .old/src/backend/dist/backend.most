@@ -1,0 +1,30 @@
+// Version: 1.0.0
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type TestimonialId__347260858 = Nat;
+type TestimonialId__670918549 = TestimonialId__347260858;
+type Testimonial__391666464 =
+  {
+    content : Text;
+    id : TestimonialId__670918549;
+    name : Text;
+    rating : Nat;
+    role : Text;
+    timestamp : Timestamp__380061758
+  };
+type Timestamp__301639476 = Int;
+type Timestamp__380061758 = Timestamp__301639476;
+actor {
+  stable adminPrincipal :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Principal]];
+      var elementIndex : Nat__490723111
+    };
+  stable testimonials :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Testimonial__391666464]];
+      var elementIndex : Nat__490723111
+    }
+};
