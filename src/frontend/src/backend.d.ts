@@ -20,9 +20,6 @@ export interface Testimonial {
 export interface backendInterface {
     deleteTestimonial(id: TestimonialId): Promise<boolean>;
     editTestimonial(id: TestimonialId, name: string, role: string, content: string, rating: bigint): Promise<boolean>;
-    getAdmin(): Promise<Principal | null>;
     getTestimonials(): Promise<Array<Testimonial>>;
-    isAdmin(): Promise<boolean>;
-    setAdmin(): Promise<void>;
     submitTestimonial(name: string, role: string, content: string, rating: bigint): Promise<TestimonialId>;
 }

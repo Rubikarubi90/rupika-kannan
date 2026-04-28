@@ -270,7 +270,7 @@ export function ExperienceSection() {
                 <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-4">
                   Session Posters
                 </p>
-                <div className="flex items-center gap-6">
+                <div className="flex flex-wrap items-center gap-6">
                   <PosterThumbnail
                     src="/assets/summer-camp-2026.png"
                     alt="Summer Camp 2026 Poster"
@@ -282,6 +282,12 @@ export function ExperienceSection() {
                     alt="Summer Camp 2025 Poster"
                     label="2025 Poster"
                     ocid="experience.summer_camp_2025_poster"
+                  />
+                  <PosterThumbnail
+                    src="/assets/computer-tutorial-2026.jpg"
+                    alt="Computer Tutorial & Courses 2026 Flyer"
+                    label="2026 Courses"
+                    ocid="experience.computer_tutorial_2026_poster"
                   />
                 </div>
               </div>

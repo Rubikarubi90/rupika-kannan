@@ -26,10 +26,7 @@ export const idlService = IDL.Service({
       [IDL.Bool],
       [],
     ),
-  'getAdmin' : IDL.Func([], [IDL.Opt(IDL.Principal)], ['query']),
   'getTestimonials' : IDL.Func([], [IDL.Vec(Testimonial)], ['query']),
-  'isAdmin' : IDL.Func([], [IDL.Bool], ['query']),
-  'setAdmin' : IDL.Func([], [], []),
   'submitTestimonial' : IDL.Func(
       [IDL.Text, IDL.Text, IDL.Text, IDL.Nat],
       [TestimonialId],
@@ -58,10 +55,7 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Bool],
         [],
       ),
-    'getAdmin' : IDL.Func([], [IDL.Opt(IDL.Principal)], ['query']),
     'getTestimonials' : IDL.Func([], [IDL.Vec(Testimonial)], ['query']),
-    'isAdmin' : IDL.Func([], [IDL.Bool], ['query']),
-    'setAdmin' : IDL.Func([], [], []),
     'submitTestimonial' : IDL.Func(
         [IDL.Text, IDL.Text, IDL.Text, IDL.Nat],
         [TestimonialId],

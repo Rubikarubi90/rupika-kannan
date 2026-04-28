@@ -755,17 +755,17 @@ const SHA512_IV = /* @__PURE__ */ Uint32Array.from([
 ]);
 const U32_MASK64 = /* @__PURE__ */ BigInt(2 ** 32 - 1);
 const _32n = /* @__PURE__ */ BigInt(32);
-function fromBig(n, le = false) {
-  if (le)
+function fromBig(n, le2 = false) {
+  if (le2)
     return { h: Number(n & U32_MASK64), l: Number(n >> _32n & U32_MASK64) };
   return { h: Number(n >> _32n & U32_MASK64) | 0, l: Number(n & U32_MASK64) | 0 };
 }
-function split(lst, le = false) {
+function split(lst, le2 = false) {
   const len = lst.length;
   let Ah = new Uint32Array(len);
   let Al = new Uint32Array(len);
   for (let i = 0; i < len; i++) {
-    const { h: h2, l } = fromBig(lst[i], le);
+    const { h: h2, l } = fromBig(lst[i], le2);
     [Ah[i], Al[i]] = [h2, l];
   }
   return [Ah, Al];
@@ -2292,7 +2292,7 @@ class TypeTable {
   }
 }
 class Visitor {
-  visitType(_t, _data) {
+  visitType(_t2, _data) {
     throw new Error("Not implemented");
   }
   visitPrimitive(t, data) {
@@ -2353,7 +2353,7 @@ class Visitor {
   visitVariant(t, _fields, data) {
     return this.visitConstruct(t, data);
   }
-  visitRec(_t, ty, data) {
+  visitRec(_t2, ty, data) {
     return this.visitConstruct(ty, data);
   }
   visitFunc(t, data) {
@@ -2463,7 +2463,7 @@ class UnknownClass extends Type {
   static [Symbol.hasInstance](instance) {
     return instance.typeName === IdlTypeName.UnknownClass;
   }
-  checkType(_t) {
+  checkType(_t2) {
     throw new Error("Method not implemented for unknown.");
   }
   accept(v2, d2) {
@@ -4342,7 +4342,7 @@ function B(t) {
     case c.Map:
       return b(e);
     case c.Tag:
-      return M(e);
+      return M$1(e);
     case c.Simple:
       return Q(e);
   }
@@ -4438,7 +4438,7 @@ function F(t) {
   const n = $(t);
   return K.decode(n);
 }
-function M(t, n) {
+function M$1(t, n) {
   const e = E(t);
   if (e === m)
     return B();
@@ -4449,18 +4449,18 @@ class x extends Error {
     super(n), this.name = "SerializationError";
   }
 }
-const p = 2 * 1024, C = 100, v = new TextEncoder();
+const p = 2 * 1024, C = 100, v$1 = new TextEncoder();
 function S(t) {
   return t << 5;
 }
-let o = new Uint8Array(p), r = new DataView(o.buffer), s = 0, O = [];
+let o$1 = new Uint8Array(p), r = new DataView(o$1.buffer), s = 0, O = [];
 function dt(t, n) {
   s = 0;
   const e = (n == null ? void 0 : n(t)) ?? t;
-  return it(m, e, n), o.slice(0, s);
+  return it(m, e, n), o$1.slice(0, s);
 }
 function _(t, n) {
-  if (s > o.length - C && (o = R(o, o.length * 2), r = new DataView(o.buffer)), t === false || t === true || t === null || t === void 0) {
+  if (s > o$1.length - C && (o$1 = R(o$1, o$1.length * 2), r = new DataView(o$1.buffer)), t === false || t === true || t === null || t === void 0) {
     et(t);
     return;
   }
@@ -4481,7 +4481,7 @@ function _(t, n) {
     return;
   }
   if (Array.isArray(t)) {
-    tt(t, n);
+    tt$1(t, n);
     return;
   }
   if (typeof t == "object") {
@@ -4490,7 +4490,7 @@ function _(t, n) {
   }
   throw new x(`Unsupported type: ${typeof t}`);
 }
-function tt(t, n) {
+function tt$1(t, n) {
   I(c.Array, t.length), t.forEach((e, i) => {
     _((n == null ? void 0 : n(e, i.toString())) ?? e, n);
   });
@@ -4553,7 +4553,7 @@ function st(t) {
   throw new x(`Unrecognized simple value: ${t.toString()}`);
 }
 function k(t, n) {
-  I(t, n.length), s > o.length - n.length && (o = R(o, o.length + n.length), r = new DataView(o.buffer)), o.set(n, s), s += n.length;
+  I(t, n.length), s > o$1.length - n.length && (o$1 = R(o$1, o$1.length + n.length), r = new DataView(o$1.buffer)), o$1.set(n, s), s += n.length;
 }
 function T(t, n) {
   I(t, n);
@@ -4571,7 +4571,7 @@ function ft(t) {
   t >= 0 ? ct(t) : ot(t);
 }
 function X$1(t) {
-  k(c.TextString, v.encode(t));
+  k(c.TextString, v$1.encode(t));
 }
 function V(t) {
   k(c.ByteString, t);
@@ -14233,7 +14233,7 @@ react_production.version = "19.1.5";
   react.exports = react_production;
 }
 var reactExports = react.exports;
-const React$2 = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
+const o = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
 var QueryClientContext = reactExports.createContext(
   void 0
 );
@@ -16352,6 +16352,7 @@ function checkDCE$1() {
   reactDom.exports = reactDom_production;
 }
 var reactDomExports = reactDom.exports;
+const vt = /* @__PURE__ */ getDefaultExportFromCjs(reactDomExports);
 /**
  * @license React
  * react-dom-client.production.js
@@ -27531,7 +27532,7 @@ const createLucideIcon = (iconName, iconNode) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$d = [
+const __iconNode$f = [
   ["path", { d: "M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z", key: "1b4qmf" }],
   ["path", { d: "M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2", key: "i71pzd" }],
   ["path", { d: "M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2", key: "10jefs" }],
@@ -27540,7 +27541,28 @@ const __iconNode$d = [
   ["path", { d: "M10 14h4", key: "kelpxr" }],
   ["path", { d: "M10 18h4", key: "1ulq68" }]
 ];
-const Building2 = createLucideIcon("building-2", __iconNode$d);
+const Building2 = createLucideIcon("building-2", __iconNode$f);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$e = [
+  ["path", { d: "M8 2v4", key: "1cmpym" }],
+  ["path", { d: "M16 2v4", key: "4m81vk" }],
+  ["rect", { width: "18", height: "18", x: "3", y: "4", rx: "2", key: "1hopcy" }],
+  ["path", { d: "M3 10h18", key: "8toen8" }]
+];
+const Calendar = createLucideIcon("calendar", __iconNode$e);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$d = [["path", { d: "m18 15-6-6-6 6", key: "153udz" }]];
+const ChevronUp = createLucideIcon("chevron-up", __iconNode$d);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27548,20 +27570,22 @@ const Building2 = createLucideIcon("building-2", __iconNode$d);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$c = [
-  ["path", { d: "M8 2v4", key: "1cmpym" }],
-  ["path", { d: "M16 2v4", key: "4m81vk" }],
-  ["rect", { width: "18", height: "18", x: "3", y: "4", rx: "2", key: "1hopcy" }],
-  ["path", { d: "M3 10h18", key: "8toen8" }]
+  ["path", { d: "M21.801 10A10 10 0 1 1 17 3.335", key: "yps3ct" }],
+  ["path", { d: "m9 11 3 3L22 4", key: "1pflzl" }]
 ];
-const Calendar = createLucideIcon("calendar", __iconNode$c);
+const CircleCheckBig = createLucideIcon("circle-check-big", __iconNode$c);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$b = [["path", { d: "m18 15-6-6-6 6", key: "153udz" }]];
-const ChevronUp = createLucideIcon("chevron-up", __iconNode$b);
+const __iconNode$b = [
+  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", ry: "2", key: "1m3agn" }],
+  ["circle", { cx: "9", cy: "9", r: "2", key: "af1f0g" }],
+  ["path", { d: "m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21", key: "1xmnt7" }]
+];
+const Image = createLucideIcon("image", __iconNode$b);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27569,10 +27593,10 @@ const ChevronUp = createLucideIcon("chevron-up", __iconNode$b);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$a = [
-  ["path", { d: "M21.801 10A10 10 0 1 1 17 3.335", key: "yps3ct" }],
-  ["path", { d: "m9 11 3 3L22 4", key: "1pflzl" }]
+  ["path", { d: "m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7", key: "132q7q" }],
+  ["rect", { x: "2", y: "4", width: "20", height: "16", rx: "2", key: "izxlao" }]
 ];
-const CircleCheckBig = createLucideIcon("circle-check-big", __iconNode$a);
+const Mail = createLucideIcon("mail", __iconNode$a);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27580,29 +27604,6 @@ const CircleCheckBig = createLucideIcon("circle-check-big", __iconNode$a);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$9 = [
-  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", ry: "2", key: "1m3agn" }],
-  ["circle", { cx: "9", cy: "9", r: "2", key: "af1f0g" }],
-  ["path", { d: "m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21", key: "1xmnt7" }]
-];
-const Image = createLucideIcon("image", __iconNode$9);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$8 = [
-  ["path", { d: "m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7", key: "132q7q" }],
-  ["rect", { x: "2", y: "4", width: "20", height: "16", rx: "2", key: "izxlao" }]
-];
-const Mail = createLucideIcon("mail", __iconNode$8);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$7 = [
   [
     "path",
     {
@@ -27612,7 +27613,29 @@ const __iconNode$7 = [
   ],
   ["circle", { cx: "12", cy: "10", r: "3", key: "ilqhr7" }]
 ];
-const MapPin = createLucideIcon("map-pin", __iconNode$7);
+const MapPin = createLucideIcon("map-pin", __iconNode$9);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$8 = [
+  ["path", { d: "M4 12h16", key: "1lakjw" }],
+  ["path", { d: "M4 18h16", key: "19g7jn" }],
+  ["path", { d: "M4 6h16", key: "1o0s65" }]
+];
+const Menu = createLucideIcon("menu", __iconNode$8);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$7 = [
+  ["path", { d: "M7.9 20A9 9 0 1 0 4 16.1L2 22Z", key: "vv11sd" }]
+];
+const MessageCircle = createLucideIcon("message-circle", __iconNode$7);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27620,11 +27643,16 @@ const MapPin = createLucideIcon("map-pin", __iconNode$7);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$6 = [
-  ["path", { d: "M4 12h16", key: "1lakjw" }],
-  ["path", { d: "M4 18h16", key: "19g7jn" }],
-  ["path", { d: "M4 6h16", key: "1o0s65" }]
+  [
+    "path",
+    {
+      d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
+      key: "1a8usu"
+    }
+  ],
+  ["path", { d: "m15 5 4 4", key: "1mk7zo" }]
 ];
-const Menu = createLucideIcon("menu", __iconNode$6);
+const Pencil = createLucideIcon("pencil", __iconNode$6);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27632,9 +27660,15 @@ const Menu = createLucideIcon("menu", __iconNode$6);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$5 = [
-  ["path", { d: "M7.9 20A9 9 0 1 0 4 16.1L2 22Z", key: "vv11sd" }]
+  [
+    "path",
+    {
+      d: "M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384",
+      key: "9njp5v"
+    }
+  ]
 ];
-const MessageCircle = createLucideIcon("message-circle", __iconNode$5);
+const Phone = createLucideIcon("phone", __iconNode$5);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27645,12 +27679,13 @@ const __iconNode$4 = [
   [
     "path",
     {
-      d: "M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384",
-      key: "9njp5v"
+      d: "M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z",
+      key: "1ffxy3"
     }
-  ]
+  ],
+  ["path", { d: "m21.854 2.147-10.94 10.939", key: "12cjpa" }]
 ];
-const Phone = createLucideIcon("phone", __iconNode$4);
+const Send = createLucideIcon("send", __iconNode$4);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27661,13 +27696,12 @@ const __iconNode$3 = [
   [
     "path",
     {
-      d: "M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z",
-      key: "1ffxy3"
+      d: "M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z",
+      key: "r04s7s"
     }
-  ],
-  ["path", { d: "m21.854 2.147-10.94 10.939", key: "12cjpa" }]
+  ]
 ];
-const Send = createLucideIcon("send", __iconNode$3);
+const Star = createLucideIcon("star", __iconNode$3);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -27675,15 +27709,13 @@ const Send = createLucideIcon("send", __iconNode$3);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$2 = [
-  [
-    "path",
-    {
-      d: "M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z",
-      key: "r04s7s"
-    }
-  ]
+  ["path", { d: "M3 6h18", key: "d0wm0j" }],
+  ["path", { d: "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6", key: "4alrt4" }],
+  ["path", { d: "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2", key: "v07s0e" }],
+  ["line", { x1: "10", x2: "10", y1: "11", y2: "17", key: "1uufr5" }],
+  ["line", { x1: "14", x2: "14", y1: "11", y2: "17", key: "xtxkd" }]
 ];
-const Star = createLucideIcon("star", __iconNode$2);
+const Trash2 = createLucideIcon("trash-2", __iconNode$2);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -36249,7 +36281,7 @@ var DefaultContext = {
   style: void 0,
   attr: void 0
 };
-var IconContext = React$2.createContext && /* @__PURE__ */ React$2.createContext(DefaultContext);
+var IconContext = o.createContext && /* @__PURE__ */ o.createContext(DefaultContext);
 var _excluded = ["attr", "size", "title"];
 function _objectWithoutProperties(e, t) {
   if (null == e) return {};
@@ -36317,12 +36349,12 @@ function _toPrimitive(t, r2) {
   return ("string" === r2 ? String : Number)(t);
 }
 function Tree2Element(tree) {
-  return tree && tree.map((node, i) => /* @__PURE__ */ React$2.createElement(node.tag, _objectSpread({
+  return tree && tree.map((node, i) => /* @__PURE__ */ o.createElement(node.tag, _objectSpread({
     key: i
   }, node.attr), Tree2Element(node.child)));
 }
 function GenIcon(data) {
-  return (props) => /* @__PURE__ */ React$2.createElement(IconBase, _extends({
+  return (props) => /* @__PURE__ */ o.createElement(IconBase, _extends({
     attr: _objectSpread({}, data.attr)
   }, props), Tree2Element(data.child));
 }
@@ -36337,7 +36369,7 @@ function IconBase(props) {
     var className;
     if (conf.className) className = conf.className;
     if (props.className) className = (className ? className + " " : "") + props.className;
-    return /* @__PURE__ */ React$2.createElement("svg", _extends({
+    return /* @__PURE__ */ o.createElement("svg", _extends({
       stroke: "currentColor",
       fill: "currentColor",
       strokeWidth: "0"
@@ -36349,9 +36381,9 @@ function IconBase(props) {
       height: computedSize,
       width: computedSize,
       xmlns: "http://www.w3.org/2000/svg"
-    }), title && /* @__PURE__ */ React$2.createElement("title", null, title), props.children);
+    }), title && /* @__PURE__ */ o.createElement("title", null, title), props.children);
   };
-  return IconContext !== void 0 ? /* @__PURE__ */ React$2.createElement(IconContext.Consumer, null, (conf) => elem(conf)) : elem(DefaultContext);
+  return IconContext !== void 0 ? /* @__PURE__ */ o.createElement(IconContext.Consumer, null, (conf) => elem(conf)) : elem(DefaultContext);
 }
 function SiInstagram(props) {
   return GenIcon({ "attr": { "role": "img", "viewBox": "0 0 24 24" }, "child": [{ "tag": "path", "attr": { "d": "M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077" }, "child": [] }] })(props);
@@ -37078,7 +37110,7 @@ function ExperienceSection() {
                   /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed mb-6", children: "Successfully conducting summer camps for the past 2 years, fostering knowledge and actively engaging young minds." }),
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-border pt-5", children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-semibold uppercase tracking-widest text-primary mb-4", children: "Session Posters" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-6", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-6", children: [
                       /* @__PURE__ */ jsxRuntimeExports.jsx(
                         PosterThumbnail,
                         {
@@ -37095,6 +37127,15 @@ function ExperienceSection() {
                           alt: "Summer Camp 2025 Poster",
                           label: "2025 Poster",
                           ocid: "experience.summer_camp_2025_poster"
+                        }
+                      ),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        PosterThumbnail,
+                        {
+                          src: "/assets/computer-tutorial-2026.jpg",
+                          alt: "Computer Tutorial & Courses 2026 Flyer",
+                          label: "2026 Courses",
+                          ocid: "experience.computer_tutorial_2026_poster"
                         }
                       )
                     ] })
@@ -37114,25 +37155,62 @@ function scrollToSection(id2) {
 }
 function CountUp({ target, suffix: suffix2 = "", duration = 2500 }) {
   const ref = reactExports.useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
   const [count, setCount] = reactExports.useState(0);
   const started = reactExports.useRef(false);
+  const rafId = reactExports.useRef(null);
   reactExports.useEffect(() => {
-    if (!isInView || started.current) return;
-    started.current = true;
-    const start = Math.min(50, Math.floor(target * 0.08));
-    const startTime = performance.now();
-    function update(now2) {
-      const elapsed = now2 - startTime;
-      const progress2 = Math.min(elapsed / duration, 1);
-      const eased = progress2 === 1 ? 1 : 1 - 2 ** (-10 * progress2);
-      setCount(Math.floor(start + (target - start) * eased));
-      if (progress2 < 1) requestAnimationFrame(update);
+    const el = ref.current;
+    if (!el) return;
+    function startAnimation() {
+      if (started.current) return;
+      started.current = true;
+      const start = Math.min(50, Math.floor(target * 0.08));
+      const startTime = performance.now();
+      function update(now2) {
+        const elapsed = now2 - startTime;
+        const progress2 = Math.min(elapsed / duration, 1);
+        const eased = progress2 === 1 ? 1 : 1 - 2 ** (-10 * progress2);
+        const current = Math.floor(start + (target - start) * eased);
+        setCount(current);
+        if (progress2 < 1) {
+          rafId.current = requestAnimationFrame(update);
+        } else {
+          setCount(target);
+        }
+      }
+      rafId.current = requestAnimationFrame(update);
     }
-    requestAnimationFrame(update);
-  }, [isInView, target, duration]);
+    if (typeof IntersectionObserver === "undefined") {
+      setCount(target);
+      return;
+    }
+    const observer2 = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting) {
+          observer2.disconnect();
+          startAnimation();
+        }
+      },
+      { threshold: 0.1, rootMargin: "0px" }
+    );
+    observer2.observe(el);
+    const rect = el.getBoundingClientRect();
+    const inView2 = rect.top < window.innerHeight && rect.bottom > 0 && rect.width > 0;
+    if (inView2) {
+      observer2.disconnect();
+      startAnimation();
+    }
+    return () => {
+      observer2.disconnect();
+      if (rafId.current !== null) {
+        cancelAnimationFrame(rafId.current);
+      }
+    };
+  }, [target, duration]);
+  const display = count >= target ? target : count;
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { ref, children: [
-    count,
+    display,
     suffix2
   ] });
 }
@@ -37426,7 +37504,7 @@ function ServicesSection() {
 }
 const SKILLS = [
   { id: 1, label: "ESL Activity Design", icon: "🎨" },
-  { id: 2, label: "Phonics Training", icon: "🔤" },
+  { id: 2, label: "Engaging Songs", icon: "🎵" },
   { id: 3, label: "Creative Teaching Methods", icon: "💡" },
   { id: 4, label: "Ice-breaker Activities", icon: "🧊" },
   { id: 5, label: "Fluency Development", icon: "🗣️" },
@@ -37436,7 +37514,8 @@ const SKILLS = [
   { id: 9, label: "Student Engagement", icon: "✨" },
   { id: 10, label: "Confidence Building", icon: "🌟" },
   { id: 11, label: "Communication Skills", icon: "💬" },
-  { id: 12, label: "School Programs", icon: "📚" }
+  { id: 12, label: "School Programs", icon: "📚" },
+  { id: 13, label: "Bulletin Board Designer", icon: "📌" }
 ];
 const HIGHLIGHTS = [
   {
@@ -37523,6 +37602,282 @@ function SkillsSection() {
     }
   );
 }
+var jt = (n) => {
+  switch (n) {
+    case "success":
+      return ee;
+    case "info":
+      return ae;
+    case "warning":
+      return oe;
+    case "error":
+      return se;
+    default:
+      return null;
+  }
+}, te = Array(12).fill(0), Yt = ({ visible: n, className: e }) => o.createElement("div", { className: ["sonner-loading-wrapper", e].filter(Boolean).join(" "), "data-visible": n }, o.createElement("div", { className: "sonner-spinner" }, te.map((t, a2) => o.createElement("div", { className: "sonner-loading-bar", key: `spinner-bar-${a2}` })))), ee = o.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 20 20", fill: "currentColor", height: "20", width: "20" }, o.createElement("path", { fillRule: "evenodd", d: "M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z", clipRule: "evenodd" })), oe = o.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: "currentColor", height: "20", width: "20" }, o.createElement("path", { fillRule: "evenodd", d: "M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z", clipRule: "evenodd" })), ae = o.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 20 20", fill: "currentColor", height: "20", width: "20" }, o.createElement("path", { fillRule: "evenodd", d: "M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z", clipRule: "evenodd" })), se = o.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 20 20", fill: "currentColor", height: "20", width: "20" }, o.createElement("path", { fillRule: "evenodd", d: "M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z", clipRule: "evenodd" })), Ot = o.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", width: "12", height: "12", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }, o.createElement("line", { x1: "18", y1: "6", x2: "6", y2: "18" }), o.createElement("line", { x1: "6", y1: "6", x2: "18", y2: "18" }));
+var Ft = () => {
+  let [n, e] = o.useState(document.hidden);
+  return o.useEffect(() => {
+    let t = () => {
+      e(document.hidden);
+    };
+    return document.addEventListener("visibilitychange", t), () => window.removeEventListener("visibilitychange", t);
+  }, []), n;
+};
+var bt = 1, yt = class {
+  constructor() {
+    this.subscribe = (e) => (this.subscribers.push(e), () => {
+      let t = this.subscribers.indexOf(e);
+      this.subscribers.splice(t, 1);
+    });
+    this.publish = (e) => {
+      this.subscribers.forEach((t) => t(e));
+    };
+    this.addToast = (e) => {
+      this.publish(e), this.toasts = [...this.toasts, e];
+    };
+    this.create = (e) => {
+      var S2;
+      let { message: t, ...a2 } = e, u = typeof (e == null ? void 0 : e.id) == "number" || ((S2 = e.id) == null ? void 0 : S2.length) > 0 ? e.id : bt++, f = this.toasts.find((g2) => g2.id === u), w2 = e.dismissible === void 0 ? true : e.dismissible;
+      return this.dismissedToasts.has(u) && this.dismissedToasts.delete(u), f ? this.toasts = this.toasts.map((g2) => g2.id === u ? (this.publish({ ...g2, ...e, id: u, title: t }), { ...g2, ...e, id: u, dismissible: w2, title: t }) : g2) : this.addToast({ title: t, ...a2, dismissible: w2, id: u }), u;
+    };
+    this.dismiss = (e) => (this.dismissedToasts.add(e), e || this.toasts.forEach((t) => {
+      this.subscribers.forEach((a2) => a2({ id: t.id, dismiss: true }));
+    }), this.subscribers.forEach((t) => t({ id: e, dismiss: true })), e);
+    this.message = (e, t) => this.create({ ...t, message: e });
+    this.error = (e, t) => this.create({ ...t, message: e, type: "error" });
+    this.success = (e, t) => this.create({ ...t, type: "success", message: e });
+    this.info = (e, t) => this.create({ ...t, type: "info", message: e });
+    this.warning = (e, t) => this.create({ ...t, type: "warning", message: e });
+    this.loading = (e, t) => this.create({ ...t, type: "loading", message: e });
+    this.promise = (e, t) => {
+      if (!t) return;
+      let a2;
+      t.loading !== void 0 && (a2 = this.create({ ...t, promise: e, type: "loading", message: t.loading, description: typeof t.description != "function" ? t.description : void 0 }));
+      let u = e instanceof Promise ? e : e(), f = a2 !== void 0, w2, S2 = u.then(async (i) => {
+        if (w2 = ["resolve", i], o.isValidElement(i)) f = false, this.create({ id: a2, type: "default", message: i });
+        else if (ie(i) && !i.ok) {
+          f = false;
+          let T2 = typeof t.error == "function" ? await t.error(`HTTP error! status: ${i.status}`) : t.error, F2 = typeof t.description == "function" ? await t.description(`HTTP error! status: ${i.status}`) : t.description;
+          this.create({ id: a2, type: "error", message: T2, description: F2 });
+        } else if (t.success !== void 0) {
+          f = false;
+          let T2 = typeof t.success == "function" ? await t.success(i) : t.success, F2 = typeof t.description == "function" ? await t.description(i) : t.description;
+          this.create({ id: a2, type: "success", message: T2, description: F2 });
+        }
+      }).catch(async (i) => {
+        if (w2 = ["reject", i], t.error !== void 0) {
+          f = false;
+          let D = typeof t.error == "function" ? await t.error(i) : t.error, T2 = typeof t.description == "function" ? await t.description(i) : t.description;
+          this.create({ id: a2, type: "error", message: D, description: T2 });
+        }
+      }).finally(() => {
+        var i;
+        f && (this.dismiss(a2), a2 = void 0), (i = t.finally) == null || i.call(t);
+      }), g2 = () => new Promise((i, D) => S2.then(() => w2[0] === "reject" ? D(w2[1]) : i(w2[1])).catch(D));
+      return typeof a2 != "string" && typeof a2 != "number" ? { unwrap: g2 } : Object.assign(a2, { unwrap: g2 });
+    };
+    this.custom = (e, t) => {
+      let a2 = (t == null ? void 0 : t.id) || bt++;
+      return this.create({ jsx: e(a2), id: a2, ...t }), a2;
+    };
+    this.getActiveToasts = () => this.toasts.filter((e) => !this.dismissedToasts.has(e.id));
+    this.subscribers = [], this.toasts = [], this.dismissedToasts = /* @__PURE__ */ new Set();
+  }
+}, v = new yt(), ne = (n, e) => {
+  let t = (e == null ? void 0 : e.id) || bt++;
+  return v.addToast({ title: n, ...e, id: t }), t;
+}, ie = (n) => n && typeof n == "object" && "ok" in n && typeof n.ok == "boolean" && "status" in n && typeof n.status == "number", le = ne, ce = () => v.toasts, de = () => v.getActiveToasts(), ue = Object.assign(le, { success: v.success, info: v.info, warning: v.warning, error: v.error, custom: v.custom, message: v.message, promise: v.promise, dismiss: v.dismiss, loading: v.loading }, { getHistory: ce, getToasts: de });
+function wt(n, { insertAt: e } = {}) {
+  if (typeof document == "undefined") return;
+  let t = document.head || document.getElementsByTagName("head")[0], a2 = document.createElement("style");
+  a2.type = "text/css", e === "top" && t.firstChild ? t.insertBefore(a2, t.firstChild) : t.appendChild(a2), a2.styleSheet ? a2.styleSheet.cssText = n : a2.appendChild(document.createTextNode(n));
+}
+wt(`:where(html[dir="ltr"]),:where([data-sonner-toaster][dir="ltr"]){--toast-icon-margin-start: -3px;--toast-icon-margin-end: 4px;--toast-svg-margin-start: -1px;--toast-svg-margin-end: 0px;--toast-button-margin-start: auto;--toast-button-margin-end: 0;--toast-close-button-start: 0;--toast-close-button-end: unset;--toast-close-button-transform: translate(-35%, -35%)}:where(html[dir="rtl"]),:where([data-sonner-toaster][dir="rtl"]){--toast-icon-margin-start: 4px;--toast-icon-margin-end: -3px;--toast-svg-margin-start: 0px;--toast-svg-margin-end: -1px;--toast-button-margin-start: 0;--toast-button-margin-end: auto;--toast-close-button-start: unset;--toast-close-button-end: 0;--toast-close-button-transform: translate(35%, -35%)}:where([data-sonner-toaster]){position:fixed;width:var(--width);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;--gray1: hsl(0, 0%, 99%);--gray2: hsl(0, 0%, 97.3%);--gray3: hsl(0, 0%, 95.1%);--gray4: hsl(0, 0%, 93%);--gray5: hsl(0, 0%, 90.9%);--gray6: hsl(0, 0%, 88.7%);--gray7: hsl(0, 0%, 85.8%);--gray8: hsl(0, 0%, 78%);--gray9: hsl(0, 0%, 56.1%);--gray10: hsl(0, 0%, 52.3%);--gray11: hsl(0, 0%, 43.5%);--gray12: hsl(0, 0%, 9%);--border-radius: 8px;box-sizing:border-box;padding:0;margin:0;list-style:none;outline:none;z-index:999999999;transition:transform .4s ease}:where([data-sonner-toaster][data-lifted="true"]){transform:translateY(-10px)}@media (hover: none) and (pointer: coarse){:where([data-sonner-toaster][data-lifted="true"]){transform:none}}:where([data-sonner-toaster][data-x-position="right"]){right:var(--offset-right)}:where([data-sonner-toaster][data-x-position="left"]){left:var(--offset-left)}:where([data-sonner-toaster][data-x-position="center"]){left:50%;transform:translate(-50%)}:where([data-sonner-toaster][data-y-position="top"]){top:var(--offset-top)}:where([data-sonner-toaster][data-y-position="bottom"]){bottom:var(--offset-bottom)}:where([data-sonner-toast]){--y: translateY(100%);--lift-amount: calc(var(--lift) * var(--gap));z-index:var(--z-index);position:absolute;opacity:0;transform:var(--y);filter:blur(0);touch-action:none;transition:transform .4s,opacity .4s,height .4s,box-shadow .2s;box-sizing:border-box;outline:none;overflow-wrap:anywhere}:where([data-sonner-toast][data-styled="true"]){padding:16px;background:var(--normal-bg);border:1px solid var(--normal-border);color:var(--normal-text);border-radius:var(--border-radius);box-shadow:0 4px 12px #0000001a;width:var(--width);font-size:13px;display:flex;align-items:center;gap:6px}:where([data-sonner-toast]:focus-visible){box-shadow:0 4px 12px #0000001a,0 0 0 2px #0003}:where([data-sonner-toast][data-y-position="top"]){top:0;--y: translateY(-100%);--lift: 1;--lift-amount: calc(1 * var(--gap))}:where([data-sonner-toast][data-y-position="bottom"]){bottom:0;--y: translateY(100%);--lift: -1;--lift-amount: calc(var(--lift) * var(--gap))}:where([data-sonner-toast]) :where([data-description]){font-weight:400;line-height:1.4;color:inherit}:where([data-sonner-toast]) :where([data-title]){font-weight:500;line-height:1.5;color:inherit}:where([data-sonner-toast]) :where([data-icon]){display:flex;height:16px;width:16px;position:relative;justify-content:flex-start;align-items:center;flex-shrink:0;margin-left:var(--toast-icon-margin-start);margin-right:var(--toast-icon-margin-end)}:where([data-sonner-toast][data-promise="true"]) :where([data-icon])>svg{opacity:0;transform:scale(.8);transform-origin:center;animation:sonner-fade-in .3s ease forwards}:where([data-sonner-toast]) :where([data-icon])>*{flex-shrink:0}:where([data-sonner-toast]) :where([data-icon]) svg{margin-left:var(--toast-svg-margin-start);margin-right:var(--toast-svg-margin-end)}:where([data-sonner-toast]) :where([data-content]){display:flex;flex-direction:column;gap:2px}[data-sonner-toast][data-styled=true] [data-button]{border-radius:4px;padding-left:8px;padding-right:8px;height:24px;font-size:12px;color:var(--normal-bg);background:var(--normal-text);margin-left:var(--toast-button-margin-start);margin-right:var(--toast-button-margin-end);border:none;cursor:pointer;outline:none;display:flex;align-items:center;flex-shrink:0;transition:opacity .4s,box-shadow .2s}:where([data-sonner-toast]) :where([data-button]):focus-visible{box-shadow:0 0 0 2px #0006}:where([data-sonner-toast]) :where([data-button]):first-of-type{margin-left:var(--toast-button-margin-start);margin-right:var(--toast-button-margin-end)}:where([data-sonner-toast]) :where([data-cancel]){color:var(--normal-text);background:rgba(0,0,0,.08)}:where([data-sonner-toast][data-theme="dark"]) :where([data-cancel]){background:rgba(255,255,255,.3)}:where([data-sonner-toast]) :where([data-close-button]){position:absolute;left:var(--toast-close-button-start);right:var(--toast-close-button-end);top:0;height:20px;width:20px;display:flex;justify-content:center;align-items:center;padding:0;color:var(--gray12);border:1px solid var(--gray4);transform:var(--toast-close-button-transform);border-radius:50%;cursor:pointer;z-index:1;transition:opacity .1s,background .2s,border-color .2s}[data-sonner-toast] [data-close-button]{background:var(--gray1)}:where([data-sonner-toast]) :where([data-close-button]):focus-visible{box-shadow:0 4px 12px #0000001a,0 0 0 2px #0003}:where([data-sonner-toast]) :where([data-disabled="true"]){cursor:not-allowed}:where([data-sonner-toast]):hover :where([data-close-button]):hover{background:var(--gray2);border-color:var(--gray5)}:where([data-sonner-toast][data-swiping="true"]):before{content:"";position:absolute;left:-50%;right:-50%;height:100%;z-index:-1}:where([data-sonner-toast][data-y-position="top"][data-swiping="true"]):before{bottom:50%;transform:scaleY(3) translateY(50%)}:where([data-sonner-toast][data-y-position="bottom"][data-swiping="true"]):before{top:50%;transform:scaleY(3) translateY(-50%)}:where([data-sonner-toast][data-swiping="false"][data-removed="true"]):before{content:"";position:absolute;inset:0;transform:scaleY(2)}:where([data-sonner-toast]):after{content:"";position:absolute;left:0;height:calc(var(--gap) + 1px);bottom:100%;width:100%}:where([data-sonner-toast][data-mounted="true"]){--y: translateY(0);opacity:1}:where([data-sonner-toast][data-expanded="false"][data-front="false"]){--scale: var(--toasts-before) * .05 + 1;--y: translateY(calc(var(--lift-amount) * var(--toasts-before))) scale(calc(-1 * var(--scale)));height:var(--front-toast-height)}:where([data-sonner-toast])>*{transition:opacity .4s}:where([data-sonner-toast][data-expanded="false"][data-front="false"][data-styled="true"])>*{opacity:0}:where([data-sonner-toast][data-visible="false"]){opacity:0;pointer-events:none}:where([data-sonner-toast][data-mounted="true"][data-expanded="true"]){--y: translateY(calc(var(--lift) * var(--offset)));height:var(--initial-height)}:where([data-sonner-toast][data-removed="true"][data-front="true"][data-swipe-out="false"]){--y: translateY(calc(var(--lift) * -100%));opacity:0}:where([data-sonner-toast][data-removed="true"][data-front="false"][data-swipe-out="false"][data-expanded="true"]){--y: translateY(calc(var(--lift) * var(--offset) + var(--lift) * -100%));opacity:0}:where([data-sonner-toast][data-removed="true"][data-front="false"][data-swipe-out="false"][data-expanded="false"]){--y: translateY(40%);opacity:0;transition:transform .5s,opacity .2s}:where([data-sonner-toast][data-removed="true"][data-front="false"]):before{height:calc(var(--initial-height) + 20%)}[data-sonner-toast][data-swiping=true]{transform:var(--y) translateY(var(--swipe-amount-y, 0px)) translate(var(--swipe-amount-x, 0px));transition:none}[data-sonner-toast][data-swiped=true]{user-select:none}[data-sonner-toast][data-swipe-out=true][data-y-position=bottom],[data-sonner-toast][data-swipe-out=true][data-y-position=top]{animation-duration:.2s;animation-timing-function:ease-out;animation-fill-mode:forwards}[data-sonner-toast][data-swipe-out=true][data-swipe-direction=left]{animation-name:swipe-out-left}[data-sonner-toast][data-swipe-out=true][data-swipe-direction=right]{animation-name:swipe-out-right}[data-sonner-toast][data-swipe-out=true][data-swipe-direction=up]{animation-name:swipe-out-up}[data-sonner-toast][data-swipe-out=true][data-swipe-direction=down]{animation-name:swipe-out-down}@keyframes swipe-out-left{0%{transform:var(--y) translate(var(--swipe-amount-x));opacity:1}to{transform:var(--y) translate(calc(var(--swipe-amount-x) - 100%));opacity:0}}@keyframes swipe-out-right{0%{transform:var(--y) translate(var(--swipe-amount-x));opacity:1}to{transform:var(--y) translate(calc(var(--swipe-amount-x) + 100%));opacity:0}}@keyframes swipe-out-up{0%{transform:var(--y) translateY(var(--swipe-amount-y));opacity:1}to{transform:var(--y) translateY(calc(var(--swipe-amount-y) - 100%));opacity:0}}@keyframes swipe-out-down{0%{transform:var(--y) translateY(var(--swipe-amount-y));opacity:1}to{transform:var(--y) translateY(calc(var(--swipe-amount-y) + 100%));opacity:0}}@media (max-width: 600px){[data-sonner-toaster]{position:fixed;right:var(--mobile-offset-right);left:var(--mobile-offset-left);width:100%}[data-sonner-toaster][dir=rtl]{left:calc(var(--mobile-offset-left) * -1)}[data-sonner-toaster] [data-sonner-toast]{left:0;right:0;width:calc(100% - var(--mobile-offset-left) * 2)}[data-sonner-toaster][data-x-position=left]{left:var(--mobile-offset-left)}[data-sonner-toaster][data-y-position=bottom]{bottom:var(--mobile-offset-bottom)}[data-sonner-toaster][data-y-position=top]{top:var(--mobile-offset-top)}[data-sonner-toaster][data-x-position=center]{left:var(--mobile-offset-left);right:var(--mobile-offset-right);transform:none}}[data-sonner-toaster][data-theme=light]{--normal-bg: #fff;--normal-border: var(--gray4);--normal-text: var(--gray12);--success-bg: hsl(143, 85%, 96%);--success-border: hsl(145, 92%, 91%);--success-text: hsl(140, 100%, 27%);--info-bg: hsl(208, 100%, 97%);--info-border: hsl(221, 91%, 91%);--info-text: hsl(210, 92%, 45%);--warning-bg: hsl(49, 100%, 97%);--warning-border: hsl(49, 91%, 91%);--warning-text: hsl(31, 92%, 45%);--error-bg: hsl(359, 100%, 97%);--error-border: hsl(359, 100%, 94%);--error-text: hsl(360, 100%, 45%)}[data-sonner-toaster][data-theme=light] [data-sonner-toast][data-invert=true]{--normal-bg: #000;--normal-border: hsl(0, 0%, 20%);--normal-text: var(--gray1)}[data-sonner-toaster][data-theme=dark] [data-sonner-toast][data-invert=true]{--normal-bg: #fff;--normal-border: var(--gray3);--normal-text: var(--gray12)}[data-sonner-toaster][data-theme=dark]{--normal-bg: #000;--normal-bg-hover: hsl(0, 0%, 12%);--normal-border: hsl(0, 0%, 20%);--normal-border-hover: hsl(0, 0%, 25%);--normal-text: var(--gray1);--success-bg: hsl(150, 100%, 6%);--success-border: hsl(147, 100%, 12%);--success-text: hsl(150, 86%, 65%);--info-bg: hsl(215, 100%, 6%);--info-border: hsl(223, 100%, 12%);--info-text: hsl(216, 87%, 65%);--warning-bg: hsl(64, 100%, 6%);--warning-border: hsl(60, 100%, 12%);--warning-text: hsl(46, 87%, 65%);--error-bg: hsl(358, 76%, 10%);--error-border: hsl(357, 89%, 16%);--error-text: hsl(358, 100%, 81%)}[data-sonner-toaster][data-theme=dark] [data-sonner-toast] [data-close-button]{background:var(--normal-bg);border-color:var(--normal-border);color:var(--normal-text)}[data-sonner-toaster][data-theme=dark] [data-sonner-toast] [data-close-button]:hover{background:var(--normal-bg-hover);border-color:var(--normal-border-hover)}[data-rich-colors=true][data-sonner-toast][data-type=success],[data-rich-colors=true][data-sonner-toast][data-type=success] [data-close-button]{background:var(--success-bg);border-color:var(--success-border);color:var(--success-text)}[data-rich-colors=true][data-sonner-toast][data-type=info],[data-rich-colors=true][data-sonner-toast][data-type=info] [data-close-button]{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text)}[data-rich-colors=true][data-sonner-toast][data-type=warning],[data-rich-colors=true][data-sonner-toast][data-type=warning] [data-close-button]{background:var(--warning-bg);border-color:var(--warning-border);color:var(--warning-text)}[data-rich-colors=true][data-sonner-toast][data-type=error],[data-rich-colors=true][data-sonner-toast][data-type=error] [data-close-button]{background:var(--error-bg);border-color:var(--error-border);color:var(--error-text)}.sonner-loading-wrapper{--size: 16px;height:var(--size);width:var(--size);position:absolute;inset:0;z-index:10}.sonner-loading-wrapper[data-visible=false]{transform-origin:center;animation:sonner-fade-out .2s ease forwards}.sonner-spinner{position:relative;top:50%;left:50%;height:var(--size);width:var(--size)}.sonner-loading-bar{animation:sonner-spin 1.2s linear infinite;background:var(--gray11);border-radius:6px;height:8%;left:-10%;position:absolute;top:-3.9%;width:24%}.sonner-loading-bar:nth-child(1){animation-delay:-1.2s;transform:rotate(.0001deg) translate(146%)}.sonner-loading-bar:nth-child(2){animation-delay:-1.1s;transform:rotate(30deg) translate(146%)}.sonner-loading-bar:nth-child(3){animation-delay:-1s;transform:rotate(60deg) translate(146%)}.sonner-loading-bar:nth-child(4){animation-delay:-.9s;transform:rotate(90deg) translate(146%)}.sonner-loading-bar:nth-child(5){animation-delay:-.8s;transform:rotate(120deg) translate(146%)}.sonner-loading-bar:nth-child(6){animation-delay:-.7s;transform:rotate(150deg) translate(146%)}.sonner-loading-bar:nth-child(7){animation-delay:-.6s;transform:rotate(180deg) translate(146%)}.sonner-loading-bar:nth-child(8){animation-delay:-.5s;transform:rotate(210deg) translate(146%)}.sonner-loading-bar:nth-child(9){animation-delay:-.4s;transform:rotate(240deg) translate(146%)}.sonner-loading-bar:nth-child(10){animation-delay:-.3s;transform:rotate(270deg) translate(146%)}.sonner-loading-bar:nth-child(11){animation-delay:-.2s;transform:rotate(300deg) translate(146%)}.sonner-loading-bar:nth-child(12){animation-delay:-.1s;transform:rotate(330deg) translate(146%)}@keyframes sonner-fade-in{0%{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}@keyframes sonner-fade-out{0%{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.8)}}@keyframes sonner-spin{0%{opacity:1}to{opacity:.15}}@media (prefers-reduced-motion){[data-sonner-toast],[data-sonner-toast]>*,.sonner-loading-bar{transition:none!important;animation:none!important}}.sonner-loader{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transform-origin:center;transition:opacity .2s,transform .2s}.sonner-loader[data-visible=false]{opacity:0;transform:scale(.8) translate(-50%,-50%)}
+`);
+function tt(n) {
+  return n.label !== void 0;
+}
+var pe = 3, me = "32px", ge = "16px", Wt = 4e3, he = 356, be = 14, ye = 20, we = 200;
+function M(...n) {
+  return n.filter(Boolean).join(" ");
+}
+function xe(n) {
+  let [e, t] = n.split("-"), a2 = [];
+  return e && a2.push(e), t && a2.push(t), a2;
+}
+var ve = (n) => {
+  var Dt, Pt, Nt, Bt, Ct, kt, It, Mt, Ht, At, Lt;
+  let { invert: e, toast: t, unstyled: a2, interacting: u, setHeights: f, visibleToasts: w2, heights: S2, index: g2, toasts: i, expanded: D, removeToast: T2, defaultRichColors: F2, closeButton: et2, style: ut2, cancelButtonStyle: ft2, actionButtonStyle: l, className: ot2 = "", descriptionClassName: at = "", duration: X2, position: st2, gap: pt, loadingIcon: rt, expandByDefault: B2, classNames: s2, icons: P2, closeButtonAriaLabel: nt2 = "Close toast", pauseWhenPageIsHidden: it2 } = n, [Y2, C2] = o.useState(null), [lt, J2] = o.useState(null), [W2, H2] = o.useState(false), [A2, mt] = o.useState(false), [L2, z2] = o.useState(false), [ct2, d2] = o.useState(false), [h2, y2] = o.useState(false), [R2, j2] = o.useState(0), [p2, _2] = o.useState(0), O2 = o.useRef(t.duration || X2 || Wt), G2 = o.useRef(null), k2 = o.useRef(null), Vt = g2 === 0, Ut = g2 + 1 <= w2, N2 = t.type, V2 = t.dismissible !== false, Kt = t.className || "", Xt = t.descriptionClassName || "", dt2 = o.useMemo(() => S2.findIndex((r2) => r2.toastId === t.id) || 0, [S2, t.id]), Jt = o.useMemo(() => {
+    var r2;
+    return (r2 = t.closeButton) != null ? r2 : et2;
+  }, [t.closeButton, et2]), Tt = o.useMemo(() => t.duration || X2 || Wt, [t.duration, X2]), gt = o.useRef(0), U = o.useRef(0), St = o.useRef(0), K2 = o.useRef(null), [Gt, Qt] = st2.split("-"), Rt = o.useMemo(() => S2.reduce((r2, m2, c2) => c2 >= dt2 ? r2 : r2 + m2.height, 0), [S2, dt2]), Et = Ft(), qt = t.invert || e, ht = N2 === "loading";
+  U.current = o.useMemo(() => dt2 * pt + Rt, [dt2, Rt]), o.useEffect(() => {
+    O2.current = Tt;
+  }, [Tt]), o.useEffect(() => {
+    H2(true);
+  }, []), o.useEffect(() => {
+    let r2 = k2.current;
+    if (r2) {
+      let m2 = r2.getBoundingClientRect().height;
+      return _2(m2), f((c2) => [{ toastId: t.id, height: m2, position: t.position }, ...c2]), () => f((c2) => c2.filter((b2) => b2.toastId !== t.id));
+    }
+  }, [f, t.id]), o.useLayoutEffect(() => {
+    if (!W2) return;
+    let r2 = k2.current, m2 = r2.style.height;
+    r2.style.height = "auto";
+    let c2 = r2.getBoundingClientRect().height;
+    r2.style.height = m2, _2(c2), f((b2) => b2.find((x2) => x2.toastId === t.id) ? b2.map((x2) => x2.toastId === t.id ? { ...x2, height: c2 } : x2) : [{ toastId: t.id, height: c2, position: t.position }, ...b2]);
+  }, [W2, t.title, t.description, f, t.id]);
+  let $2 = o.useCallback(() => {
+    mt(true), j2(U.current), f((r2) => r2.filter((m2) => m2.toastId !== t.id)), setTimeout(() => {
+      T2(t);
+    }, we);
+  }, [t, T2, f, U]);
+  o.useEffect(() => {
+    if (t.promise && N2 === "loading" || t.duration === 1 / 0 || t.type === "loading") return;
+    let r2;
+    return D || u || it2 && Et ? (() => {
+      if (St.current < gt.current) {
+        let b2 = (/* @__PURE__ */ new Date()).getTime() - gt.current;
+        O2.current = O2.current - b2;
+      }
+      St.current = (/* @__PURE__ */ new Date()).getTime();
+    })() : (() => {
+      O2.current !== 1 / 0 && (gt.current = (/* @__PURE__ */ new Date()).getTime(), r2 = setTimeout(() => {
+        var b2;
+        (b2 = t.onAutoClose) == null || b2.call(t, t), $2();
+      }, O2.current));
+    })(), () => clearTimeout(r2);
+  }, [D, u, t, N2, it2, Et, $2]), o.useEffect(() => {
+    t.delete && $2();
+  }, [$2, t.delete]);
+  function Zt() {
+    var r2, m2, c2;
+    return P2 != null && P2.loading ? o.createElement("div", { className: M(s2 == null ? void 0 : s2.loader, (r2 = t == null ? void 0 : t.classNames) == null ? void 0 : r2.loader, "sonner-loader"), "data-visible": N2 === "loading" }, P2.loading) : rt ? o.createElement("div", { className: M(s2 == null ? void 0 : s2.loader, (m2 = t == null ? void 0 : t.classNames) == null ? void 0 : m2.loader, "sonner-loader"), "data-visible": N2 === "loading" }, rt) : o.createElement(Yt, { className: M(s2 == null ? void 0 : s2.loader, (c2 = t == null ? void 0 : t.classNames) == null ? void 0 : c2.loader), visible: N2 === "loading" });
+  }
+  return o.createElement("li", { tabIndex: 0, ref: k2, className: M(ot2, Kt, s2 == null ? void 0 : s2.toast, (Dt = t == null ? void 0 : t.classNames) == null ? void 0 : Dt.toast, s2 == null ? void 0 : s2.default, s2 == null ? void 0 : s2[N2], (Pt = t == null ? void 0 : t.classNames) == null ? void 0 : Pt[N2]), "data-sonner-toast": "", "data-rich-colors": (Nt = t.richColors) != null ? Nt : F2, "data-styled": !(t.jsx || t.unstyled || a2), "data-mounted": W2, "data-promise": !!t.promise, "data-swiped": h2, "data-removed": A2, "data-visible": Ut, "data-y-position": Gt, "data-x-position": Qt, "data-index": g2, "data-front": Vt, "data-swiping": L2, "data-dismissible": V2, "data-type": N2, "data-invert": qt, "data-swipe-out": ct2, "data-swipe-direction": lt, "data-expanded": !!(D || B2 && W2), style: { "--index": g2, "--toasts-before": g2, "--z-index": i.length - g2, "--offset": `${A2 ? R2 : U.current}px`, "--initial-height": B2 ? "auto" : `${p2}px`, ...ut2, ...t.style }, onDragEnd: () => {
+    z2(false), C2(null), K2.current = null;
+  }, onPointerDown: (r2) => {
+    ht || !V2 || (G2.current = /* @__PURE__ */ new Date(), j2(U.current), r2.target.setPointerCapture(r2.pointerId), r2.target.tagName !== "BUTTON" && (z2(true), K2.current = { x: r2.clientX, y: r2.clientY }));
+  }, onPointerUp: () => {
+    var x2, Q2, q2, Z2;
+    if (ct2 || !V2) return;
+    K2.current = null;
+    let r2 = Number(((x2 = k2.current) == null ? void 0 : x2.style.getPropertyValue("--swipe-amount-x").replace("px", "")) || 0), m2 = Number(((Q2 = k2.current) == null ? void 0 : Q2.style.getPropertyValue("--swipe-amount-y").replace("px", "")) || 0), c2 = (/* @__PURE__ */ new Date()).getTime() - ((q2 = G2.current) == null ? void 0 : q2.getTime()), b2 = Y2 === "x" ? r2 : m2, I2 = Math.abs(b2) / c2;
+    if (Math.abs(b2) >= ye || I2 > 0.11) {
+      j2(U.current), (Z2 = t.onDismiss) == null || Z2.call(t, t), J2(Y2 === "x" ? r2 > 0 ? "right" : "left" : m2 > 0 ? "down" : "up"), $2(), d2(true), y2(false);
+      return;
+    }
+    z2(false), C2(null);
+  }, onPointerMove: (r2) => {
+    var Q2, q2, Z2, zt;
+    if (!K2.current || !V2 || ((Q2 = window.getSelection()) == null ? void 0 : Q2.toString().length) > 0) return;
+    let c2 = r2.clientY - K2.current.y, b2 = r2.clientX - K2.current.x, I2 = (q2 = n.swipeDirections) != null ? q2 : xe(st2);
+    !Y2 && (Math.abs(b2) > 1 || Math.abs(c2) > 1) && C2(Math.abs(b2) > Math.abs(c2) ? "x" : "y");
+    let x2 = { x: 0, y: 0 };
+    Y2 === "y" ? (I2.includes("top") || I2.includes("bottom")) && (I2.includes("top") && c2 < 0 || I2.includes("bottom") && c2 > 0) && (x2.y = c2) : Y2 === "x" && (I2.includes("left") || I2.includes("right")) && (I2.includes("left") && b2 < 0 || I2.includes("right") && b2 > 0) && (x2.x = b2), (Math.abs(x2.x) > 0 || Math.abs(x2.y) > 0) && y2(true), (Z2 = k2.current) == null || Z2.style.setProperty("--swipe-amount-x", `${x2.x}px`), (zt = k2.current) == null || zt.style.setProperty("--swipe-amount-y", `${x2.y}px`);
+  } }, Jt && !t.jsx ? o.createElement("button", { "aria-label": nt2, "data-disabled": ht, "data-close-button": true, onClick: ht || !V2 ? () => {
+  } : () => {
+    var r2;
+    $2(), (r2 = t.onDismiss) == null || r2.call(t, t);
+  }, className: M(s2 == null ? void 0 : s2.closeButton, (Bt = t == null ? void 0 : t.classNames) == null ? void 0 : Bt.closeButton) }, (Ct = P2 == null ? void 0 : P2.close) != null ? Ct : Ot) : null, t.jsx || reactExports.isValidElement(t.title) ? t.jsx ? t.jsx : typeof t.title == "function" ? t.title() : t.title : o.createElement(o.Fragment, null, N2 || t.icon || t.promise ? o.createElement("div", { "data-icon": "", className: M(s2 == null ? void 0 : s2.icon, (kt = t == null ? void 0 : t.classNames) == null ? void 0 : kt.icon) }, t.promise || t.type === "loading" && !t.icon ? t.icon || Zt() : null, t.type !== "loading" ? t.icon || (P2 == null ? void 0 : P2[N2]) || jt(N2) : null) : null, o.createElement("div", { "data-content": "", className: M(s2 == null ? void 0 : s2.content, (It = t == null ? void 0 : t.classNames) == null ? void 0 : It.content) }, o.createElement("div", { "data-title": "", className: M(s2 == null ? void 0 : s2.title, (Mt = t == null ? void 0 : t.classNames) == null ? void 0 : Mt.title) }, typeof t.title == "function" ? t.title() : t.title), t.description ? o.createElement("div", { "data-description": "", className: M(at, Xt, s2 == null ? void 0 : s2.description, (Ht = t == null ? void 0 : t.classNames) == null ? void 0 : Ht.description) }, typeof t.description == "function" ? t.description() : t.description) : null), reactExports.isValidElement(t.cancel) ? t.cancel : t.cancel && tt(t.cancel) ? o.createElement("button", { "data-button": true, "data-cancel": true, style: t.cancelButtonStyle || ft2, onClick: (r2) => {
+    var m2, c2;
+    tt(t.cancel) && V2 && ((c2 = (m2 = t.cancel).onClick) == null || c2.call(m2, r2), $2());
+  }, className: M(s2 == null ? void 0 : s2.cancelButton, (At = t == null ? void 0 : t.classNames) == null ? void 0 : At.cancelButton) }, t.cancel.label) : null, reactExports.isValidElement(t.action) ? t.action : t.action && tt(t.action) ? o.createElement("button", { "data-button": true, "data-action": true, style: t.actionButtonStyle || l, onClick: (r2) => {
+    var m2, c2;
+    tt(t.action) && ((c2 = (m2 = t.action).onClick) == null || c2.call(m2, r2), !r2.defaultPrevented && $2());
+  }, className: M(s2 == null ? void 0 : s2.actionButton, (Lt = t == null ? void 0 : t.classNames) == null ? void 0 : Lt.actionButton) }, t.action.label) : null));
+};
+function _t() {
+  if (typeof window == "undefined" || typeof document == "undefined") return "ltr";
+  let n = document.documentElement.getAttribute("dir");
+  return n === "auto" || !n ? window.getComputedStyle(document.documentElement).direction : n;
+}
+function Te(n, e) {
+  let t = {};
+  return [n, e].forEach((a2, u) => {
+    let f = u === 1, w2 = f ? "--mobile-offset" : "--offset", S2 = f ? ge : me;
+    function g2(i) {
+      ["top", "right", "bottom", "left"].forEach((D) => {
+        t[`${w2}-${D}`] = typeof i == "number" ? `${i}px` : i;
+      });
+    }
+    typeof a2 == "number" || typeof a2 == "string" ? g2(a2) : typeof a2 == "object" ? ["top", "right", "bottom", "left"].forEach((i) => {
+      a2[i] === void 0 ? t[`${w2}-${i}`] = S2 : t[`${w2}-${i}`] = typeof a2[i] == "number" ? `${a2[i]}px` : a2[i];
+    }) : g2(S2);
+  }), t;
+}
+reactExports.forwardRef(function(e, t) {
+  let { invert: a2, position: u = "bottom-right", hotkey: f = ["altKey", "KeyT"], expand: w2, closeButton: S2, className: g2, offset: i, mobileOffset: D, theme: T2 = "light", richColors: F2, duration: et2, style: ut2, visibleToasts: ft2 = pe, toastOptions: l, dir: ot2 = _t(), gap: at = be, loadingIcon: X2, icons: st2, containerAriaLabel: pt = "Notifications", pauseWhenPageIsHidden: rt } = e, [B2, s2] = o.useState([]), P2 = o.useMemo(() => Array.from(new Set([u].concat(B2.filter((d2) => d2.position).map((d2) => d2.position)))), [B2, u]), [nt2, it2] = o.useState([]), [Y2, C2] = o.useState(false), [lt, J2] = o.useState(false), [W2, H2] = o.useState(T2 !== "system" ? T2 : typeof window != "undefined" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"), A2 = o.useRef(null), mt = f.join("+").replace(/Key/g, "").replace(/Digit/g, ""), L2 = o.useRef(null), z2 = o.useRef(false), ct2 = o.useCallback((d2) => {
+    s2((h2) => {
+      var y2;
+      return (y2 = h2.find((R2) => R2.id === d2.id)) != null && y2.delete || v.dismiss(d2.id), h2.filter(({ id: R2 }) => R2 !== d2.id);
+    });
+  }, []);
+  return o.useEffect(() => v.subscribe((d2) => {
+    if (d2.dismiss) {
+      s2((h2) => h2.map((y2) => y2.id === d2.id ? { ...y2, delete: true } : y2));
+      return;
+    }
+    setTimeout(() => {
+      vt.flushSync(() => {
+        s2((h2) => {
+          let y2 = h2.findIndex((R2) => R2.id === d2.id);
+          return y2 !== -1 ? [...h2.slice(0, y2), { ...h2[y2], ...d2 }, ...h2.slice(y2 + 1)] : [d2, ...h2];
+        });
+      });
+    });
+  }), []), o.useEffect(() => {
+    if (T2 !== "system") {
+      H2(T2);
+      return;
+    }
+    if (T2 === "system" && (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? H2("dark") : H2("light")), typeof window == "undefined") return;
+    let d2 = window.matchMedia("(prefers-color-scheme: dark)");
+    try {
+      d2.addEventListener("change", ({ matches: h2 }) => {
+        H2(h2 ? "dark" : "light");
+      });
+    } catch (h2) {
+      d2.addListener(({ matches: y2 }) => {
+        try {
+          H2(y2 ? "dark" : "light");
+        } catch (R2) {
+          console.error(R2);
+        }
+      });
+    }
+  }, [T2]), o.useEffect(() => {
+    B2.length <= 1 && C2(false);
+  }, [B2]), o.useEffect(() => {
+    let d2 = (h2) => {
+      var R2, j2;
+      f.every((p2) => h2[p2] || h2.code === p2) && (C2(true), (R2 = A2.current) == null || R2.focus()), h2.code === "Escape" && (document.activeElement === A2.current || (j2 = A2.current) != null && j2.contains(document.activeElement)) && C2(false);
+    };
+    return document.addEventListener("keydown", d2), () => document.removeEventListener("keydown", d2);
+  }, [f]), o.useEffect(() => {
+    if (A2.current) return () => {
+      L2.current && (L2.current.focus({ preventScroll: true }), L2.current = null, z2.current = false);
+    };
+  }, [A2.current]), o.createElement("section", { ref: t, "aria-label": `${pt} ${mt}`, tabIndex: -1, "aria-live": "polite", "aria-relevant": "additions text", "aria-atomic": "false", suppressHydrationWarning: true }, P2.map((d2, h2) => {
+    var j2;
+    let [y2, R2] = d2.split("-");
+    return B2.length ? o.createElement("ol", { key: d2, dir: ot2 === "auto" ? _t() : ot2, tabIndex: -1, ref: A2, className: g2, "data-sonner-toaster": true, "data-theme": W2, "data-y-position": y2, "data-lifted": Y2 && B2.length > 1 && !w2, "data-x-position": R2, style: { "--front-toast-height": `${((j2 = nt2[0]) == null ? void 0 : j2.height) || 0}px`, "--width": `${he}px`, "--gap": `${at}px`, ...ut2, ...Te(i, D) }, onBlur: (p2) => {
+      z2.current && !p2.currentTarget.contains(p2.relatedTarget) && (z2.current = false, L2.current && (L2.current.focus({ preventScroll: true }), L2.current = null));
+    }, onFocus: (p2) => {
+      p2.target instanceof HTMLElement && p2.target.dataset.dismissible === "false" || z2.current || (z2.current = true, L2.current = p2.relatedTarget);
+    }, onMouseEnter: () => C2(true), onMouseMove: () => C2(true), onMouseLeave: () => {
+      lt || C2(false);
+    }, onDragEnd: () => C2(false), onPointerDown: (p2) => {
+      p2.target instanceof HTMLElement && p2.target.dataset.dismissible === "false" || J2(true);
+    }, onPointerUp: () => J2(false) }, B2.filter((p2) => !p2.position && h2 === 0 || p2.position === d2).map((p2, _2) => {
+      var O2, G2;
+      return o.createElement(ve, { key: p2.id, icons: st2, index: _2, toast: p2, defaultRichColors: F2, duration: (O2 = l == null ? void 0 : l.duration) != null ? O2 : et2, className: l == null ? void 0 : l.className, descriptionClassName: l == null ? void 0 : l.descriptionClassName, invert: a2, visibleToasts: ft2, closeButton: (G2 = l == null ? void 0 : l.closeButton) != null ? G2 : S2, interacting: lt, position: d2, style: l == null ? void 0 : l.style, unstyled: l == null ? void 0 : l.unstyled, classNames: l == null ? void 0 : l.classNames, cancelButtonStyle: l == null ? void 0 : l.cancelButtonStyle, actionButtonStyle: l == null ? void 0 : l.actionButtonStyle, removeToast: ct2, toasts: B2.filter((k2) => k2.position == p2.position), heights: nt2.filter((k2) => k2.position == p2.position), setHeights: it2, expandByDefault: w2, gap: at, loadingIcon: X2, expanded: Y2, pauseWhenPageIsHidden: rt, swipeDirections: e.swipeDirections });
+    })) : null;
+  }));
+});
 const TestimonialId = Nat;
 const Timestamp = Int;
 const Testimonial = Record({
@@ -37540,10 +37895,7 @@ Service({
     [Bool],
     []
   ),
-  "getAdmin": Func([], [Opt(Principal2)], ["query"]),
   "getTestimonials": Func([], [Vec(Testimonial)], ["query"]),
-  "isAdmin": Func([], [Bool], ["query"]),
-  "setAdmin": Func([], [], []),
   "submitTestimonial": Func(
     [Text, Text, Text, Nat],
     [TestimonialId],
@@ -37568,10 +37920,7 @@ const idlFactory = ({ IDL: IDL2 }) => {
       [IDL2.Bool],
       []
     ),
-    "getAdmin": IDL2.Func([], [IDL2.Opt(IDL2.Principal)], ["query"]),
     "getTestimonials": IDL2.Func([], [IDL2.Vec(Testimonial2)], ["query"]),
-    "isAdmin": IDL2.Func([], [IDL2.Bool], ["query"]),
-    "setAdmin": IDL2.Func([], [], []),
     "submitTestimonial": IDL2.Func(
       [IDL2.Text, IDL2.Text, IDL2.Text, IDL2.Nat],
       [TestimonialId2],
@@ -37614,20 +37963,6 @@ class Backend {
       return result;
     }
   }
-  async getAdmin() {
-    if (this.processError) {
-      try {
-        const result = await this.actor.getAdmin();
-        return from_candid_opt_n1(this._uploadFile, this._downloadFile, result);
-      } catch (e) {
-        this.processError(e);
-        throw new Error("unreachable");
-      }
-    } else {
-      const result = await this.actor.getAdmin();
-      return from_candid_opt_n1(this._uploadFile, this._downloadFile, result);
-    }
-  }
   async getTestimonials() {
     if (this.processError) {
       try {
@@ -37639,34 +37974,6 @@ class Backend {
       }
     } else {
       const result = await this.actor.getTestimonials();
-      return result;
-    }
-  }
-  async isAdmin() {
-    if (this.processError) {
-      try {
-        const result = await this.actor.isAdmin();
-        return result;
-      } catch (e) {
-        this.processError(e);
-        throw new Error("unreachable");
-      }
-    } else {
-      const result = await this.actor.isAdmin();
-      return result;
-    }
-  }
-  async setAdmin() {
-    if (this.processError) {
-      try {
-        const result = await this.actor.setAdmin();
-        return result;
-      } catch (e) {
-        this.processError(e);
-        throw new Error("unreachable");
-      }
-    } else {
-      const result = await this.actor.setAdmin();
       return result;
     }
   }
@@ -37684,9 +37991,6 @@ class Backend {
       return result;
     }
   }
-}
-function from_candid_opt_n1(_uploadFile, _downloadFile, value) {
-  return value.length === 0 ? null : value[0];
 }
 function createActor(canisterId, _uploadFile, _downloadFile, options = {}) {
   const agent = options.agent || HttpAgent.createSync({
@@ -37749,42 +38053,517 @@ function StarPicker({
     }
   );
 }
-function TestimonialCard({
-  testimonial: t,
-  index: index2
-}) {
+function ContextMenu({ x: x2, y: y2, onEdit, onDelete, onClose }) {
+  const menuRef = reactExports.useRef(null);
+  reactExports.useEffect(() => {
+    function handleClickOutside(e) {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        onClose();
+      }
+    }
+    function handleKeyDown(e) {
+      if (e.key === "Escape") onClose();
+    }
+    function handleScroll() {
+      onClose();
+    }
+    const timeout2 = setTimeout(() => {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener(
+        "touchstart",
+        handleClickOutside
+      );
+    }, 50);
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("scroll", handleScroll, true);
+    return () => {
+      clearTimeout(timeout2);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener(
+        "touchstart",
+        handleClickOutside
+      );
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("scroll", handleScroll, true);
+    };
+  }, [onClose]);
+  const menuW = 168;
+  const menuH = 100;
+  const safeX = Math.min(x2, window.innerWidth - menuW - 8);
+  const safeY = Math.min(y2, window.innerHeight - menuH - 8);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     motion.div,
     {
-      "data-ocid": `testimonials.item.${index2 + 1}`,
-      initial: { opacity: 0, y: 24 },
-      whileInView: { opacity: 1, y: 0 },
-      viewport: { once: true },
-      transition: {
-        duration: 0.55,
-        ease: "easeOut",
-        delay: Math.min(index2, 5) * 0.07
-      },
-      className: "bg-card rounded-2xl border border-border p-6 shadow-xs hover-lift flex flex-col",
+      ref: menuRef,
+      "data-ocid": "testimonials.dropdown_menu",
+      initial: { opacity: 0, scale: 0.88, y: -6 },
+      animate: { opacity: 1, scale: 1, y: 0 },
+      exit: { opacity: 0, scale: 0.88, y: -6 },
+      transition: { duration: 0.15, ease: "easeOut" },
+      style: { position: "fixed", left: safeX, top: safeY, zIndex: 9999 },
+      className: "bg-card border border-border rounded-xl shadow-[0_8px_32px_-4px_rgba(0,0,0,0.18)] overflow-hidden min-w-[168px]",
       children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(StarDisplay, { rating: t.rating }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground leading-relaxed mt-4 flex-1", children: [
-          "“",
-          t.content,
-          "”"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-5 flex items-center gap-3 pt-4 border-t border-border", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold text-primary", children: t.name.charAt(0) }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-foreground truncate", children: t.name }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground truncate", children: t.role })
-          ] })
-        ] })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            type: "button",
+            "data-ocid": "testimonials.edit_button",
+            onClick: () => {
+              onEdit();
+              onClose();
+            },
+            className: "flex items-center gap-2.5 w-full px-4 py-3 text-sm text-foreground hover:bg-primary/10 transition-colors duration-150 focus-visible:outline-none focus-visible:bg-primary/10",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Pencil, { className: "w-4 h-4 text-primary flex-shrink-0" }),
+              "Edit Review"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-px bg-border mx-3" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            type: "button",
+            "data-ocid": "testimonials.delete_button",
+            onClick: () => {
+              onDelete();
+              onClose();
+            },
+            className: "flex items-center gap-2.5 w-full px-4 py-3 text-sm text-destructive hover:bg-destructive/10 transition-colors duration-150 focus-visible:outline-none focus-visible:bg-destructive/10",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4 flex-shrink-0" }),
+              "Delete Review"
+            ]
+          }
+        )
       ]
     }
   );
 }
-function Carousel({ testimonials }) {
+function DeleteConfirmDialog({
+  testimonialName,
+  onConfirm,
+  onCancel,
+  isDeleting
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    motion.div,
+    {
+      initial: { opacity: 0 },
+      animate: { opacity: 1 },
+      exit: { opacity: 0 },
+      className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-foreground/30 backdrop-blur-sm",
+      onClick: onCancel,
+      "data-ocid": "testimonials.dialog",
+      children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        motion.div,
+        {
+          initial: { scale: 0.88, y: 16, opacity: 0 },
+          animate: { scale: 1, y: 0, opacity: 1 },
+          exit: { scale: 0.88, opacity: 0 },
+          transition: { type: "spring", stiffness: 320, damping: 24 },
+          onClick: (e) => e.stopPropagation(),
+          className: "bg-card rounded-2xl border border-border shadow-[0_20px_60px_-10px_rgba(0,0,0,0.22)] p-7 max-w-sm w-full",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-4 mb-5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 rounded-full bg-destructive/12 flex items-center justify-center flex-shrink-0 mt-0.5", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-5 h-5 text-destructive" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-base font-bold text-foreground mb-1", children: "Delete this review?" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground leading-relaxed", children: [
+                  "You're about to permanently delete the review by",
+                  " ",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-semibold text-foreground", children: testimonialName }),
+                  ". This cannot be undone."
+                ] })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-3 justify-end", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: onCancel,
+                  disabled: isDeleting,
+                  "data-ocid": "testimonials.cancel_button",
+                  className: "px-4 py-2 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors disabled:opacity-50",
+                  children: "Cancel"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: onConfirm,
+                  disabled: isDeleting,
+                  "data-ocid": "testimonials.confirm_button",
+                  className: "px-4 py-2 rounded-lg bg-destructive text-destructive-foreground text-sm font-semibold hover:opacity-90 transition-colors disabled:opacity-60",
+                  children: isDeleting ? "Deleting…" : "Delete"
+                }
+              )
+            ] })
+          ]
+        }
+      )
+    }
+  );
+}
+function EditModal({ testimonial, onSave, onClose, isSaving }) {
+  const [name, setName] = reactExports.useState(testimonial.name);
+  const [role, setRole] = reactExports.useState(testimonial.role);
+  const [content, setContent] = reactExports.useState(testimonial.content);
+  const [rating, setRating] = reactExports.useState(Number(testimonial.rating));
+  const [errors, setErrors] = reactExports.useState({});
+  function validate() {
+    const e = {};
+    if (!name.trim()) e.name = "Name is required.";
+    if (!role.trim()) e.role = "Role is required.";
+    if (!content.trim() || content.trim().length < 10)
+      e.content = "Review must be at least 10 characters.";
+    if (rating === 0) e.rating = "Please select a rating.";
+    return e;
+  }
+  async function handleSave(e) {
+    e.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    await onSave(name.trim(), role.trim(), content.trim(), BigInt(rating));
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    motion.div,
+    {
+      initial: { opacity: 0 },
+      animate: { opacity: 1 },
+      exit: { opacity: 0 },
+      className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-foreground/30 backdrop-blur-sm",
+      onClick: onClose,
+      "data-ocid": "testimonials.dialog",
+      children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        motion.div,
+        {
+          initial: { scale: 0.88, y: 20, opacity: 0 },
+          animate: { scale: 1, y: 0, opacity: 1 },
+          exit: { scale: 0.88, opacity: 0 },
+          transition: { type: "spring", stiffness: 300, damping: 24 },
+          onClick: (e) => e.stopPropagation(),
+          className: "bg-card rounded-2xl border border-border shadow-[0_20px_60px_-10px_rgba(45,80,22,0.22)] w-full max-w-lg overflow-hidden",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-6 py-5 border-b border-border bg-primary/5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2.5", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Pencil, { className: "w-4 h-4 text-primary" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-base font-bold text-foreground", children: "Edit Review" })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: onClose,
+                  "aria-label": "Close",
+                  "data-ocid": "testimonials.close_button",
+                  className: "w-8 h-8 rounded-full bg-muted flex items-center justify-center hover:bg-border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-4 h-4 text-muted-foreground" })
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleSave, noValidate: true, className: "px-6 py-6 space-y-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-4", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "label",
+                    {
+                      htmlFor: "edit-name",
+                      className: "text-sm font-semibold text-foreground",
+                      children: [
+                        "Name ",
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-primary", children: "*" })
+                      ]
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      id: "edit-name",
+                      type: "text",
+                      value: name,
+                      onChange: (e) => {
+                        setName(e.target.value);
+                        if (errors.name) setErrors((p2) => ({ ...p2, name: "" }));
+                      },
+                      "data-ocid": "testimonials.name_input",
+                      className: `w-full rounded-lg border ${errors.name ? "border-destructive" : "border-input"} bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors`
+                    }
+                  ),
+                  errors.name && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "p",
+                    {
+                      className: "text-xs text-destructive",
+                      "data-ocid": "testimonials.name.field_error",
+                      children: errors.name
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "label",
+                    {
+                      htmlFor: "edit-role",
+                      className: "text-sm font-semibold text-foreground",
+                      children: [
+                        "Role ",
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-primary", children: "*" })
+                      ]
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      id: "edit-role",
+                      type: "text",
+                      value: role,
+                      onChange: (e) => {
+                        setRole(e.target.value);
+                        if (errors.role) setErrors((p2) => ({ ...p2, role: "" }));
+                      },
+                      "data-ocid": "testimonials.role_input",
+                      className: `w-full rounded-lg border ${errors.role ? "border-destructive" : "border-input"} bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors`
+                    }
+                  ),
+                  errors.role && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "p",
+                    {
+                      className: "text-xs text-destructive",
+                      "data-ocid": "testimonials.role.field_error",
+                      children: errors.role
+                    }
+                  )
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "label",
+                  {
+                    htmlFor: "edit-content",
+                    className: "text-sm font-semibold text-foreground",
+                    children: [
+                      "Review ",
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-primary", children: "*" })
+                    ]
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "textarea",
+                  {
+                    id: "edit-content",
+                    value: content,
+                    onChange: (e) => {
+                      setContent(e.target.value);
+                      if (errors.content) setErrors((p2) => ({ ...p2, content: "" }));
+                    },
+                    rows: 4,
+                    "data-ocid": "testimonials.review_textarea",
+                    className: `w-full rounded-lg border ${errors.content ? "border-destructive" : "border-input"} bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors resize-none`
+                  }
+                ),
+                errors.content && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-xs text-destructive",
+                    "data-ocid": "testimonials.review.field_error",
+                    children: errors.content
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm font-semibold text-foreground", children: [
+                  "Rating ",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-primary", children: "*" })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  StarPicker,
+                  {
+                    value: rating,
+                    onChange: (n) => {
+                      setRating(n);
+                      if (errors.rating) setErrors((p2) => ({ ...p2, rating: "" }));
+                    }
+                  }
+                ),
+                errors.rating && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-xs text-destructive",
+                    "data-ocid": "testimonials.rating.field_error",
+                    children: errors.rating
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-3 justify-end pt-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    onClick: onClose,
+                    disabled: isSaving,
+                    "data-ocid": "testimonials.cancel_button",
+                    className: "px-4 py-2.5 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors disabled:opacity-50",
+                    children: "Cancel"
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "submit",
+                    disabled: isSaving,
+                    "data-ocid": "testimonials.save_button",
+                    className: "px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-colors disabled:opacity-60",
+                    children: isSaving ? "Saving…" : "Save Changes"
+                  }
+                )
+              ] })
+            ] })
+          ]
+        }
+      )
+    }
+  );
+}
+function TestimonialCard({
+  testimonial: t,
+  index: index2,
+  onEdit,
+  onDelete
+}) {
+  const [menuPos, setMenuPos] = reactExports.useState(null);
+  const longPressTimer = reactExports.useRef(null);
+  const didLongPress = reactExports.useRef(false);
+  const pressCoords = reactExports.useRef({ x: 0, y: 0 });
+  function openMenu(x2, y2) {
+    setMenuPos({ x: x2, y: y2 });
+    if (navigator.vibrate) navigator.vibrate(30);
+  }
+  function clearTimer() {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  }
+  function handleContextMenu(e) {
+    e.preventDefault();
+    didLongPress.current = true;
+    openMenu(e.clientX, e.clientY);
+  }
+  function handleTouchStart(e) {
+    didLongPress.current = false;
+    const touch = e.touches[0];
+    pressCoords.current = { x: touch.clientX, y: touch.clientY };
+    longPressTimer.current = setTimeout(() => {
+      didLongPress.current = true;
+      openMenu(touch.clientX, touch.clientY);
+    }, 500);
+  }
+  function handleTouchEnd(e) {
+    clearTimer();
+    if (didLongPress.current) {
+      e.preventDefault();
+    }
+  }
+  function handleTouchMove(e) {
+    const touch = e.touches[0];
+    const dx = Math.abs(touch.clientX - pressCoords.current.x);
+    const dy = Math.abs(touch.clientY - pressCoords.current.y);
+    if (dx > 10 || dy > 10) clearTimer();
+  }
+  function handleTouchCancel() {
+    clearTimer();
+    didLongPress.current = false;
+  }
+  function handleMouseDown(e) {
+    if (e.button !== 0) return;
+    didLongPress.current = false;
+    pressCoords.current = { x: e.clientX, y: e.clientY };
+    const { clientX, clientY } = e;
+    longPressTimer.current = setTimeout(() => {
+      didLongPress.current = true;
+      openMenu(clientX, clientY);
+    }, 500);
+  }
+  function handleMouseUp() {
+    clearTimer();
+  }
+  function handleMouseMove(e) {
+    const dx = Math.abs(e.clientX - pressCoords.current.x);
+    const dy = Math.abs(e.clientY - pressCoords.current.y);
+    if (dx > 10 || dy > 10) clearTimer();
+  }
+  function handleMouseLeave() {
+    clearTimer();
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      motion.div,
+      {
+        "data-ocid": `testimonials.item.${index2 + 1}`,
+        initial: { opacity: 0, y: 24 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: {
+          duration: 0.55,
+          ease: "easeOut",
+          delay: Math.min(index2, 5) * 0.07
+        },
+        onContextMenu: handleContextMenu,
+        onMouseDown: handleMouseDown,
+        onMouseUp: handleMouseUp,
+        onMouseMove: handleMouseMove,
+        onMouseLeave: handleMouseLeave,
+        onTouchStart: handleTouchStart,
+        onTouchEnd: handleTouchEnd,
+        onTouchMove: handleTouchMove,
+        onTouchCancel: handleTouchCancel,
+        className: "bg-card rounded-2xl border border-border p-6 shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col cursor-default select-none relative group",
+        title: "Long-press or right-click to manage",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "div",
+            {
+              "aria-hidden": "true",
+              className: "absolute top-3 right-3 w-1.5 h-1.5 rounded-full bg-primary/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(StarDisplay, { rating: t.rating }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground leading-relaxed mt-4 flex-1", children: [
+            "“",
+            t.content,
+            "”"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-5 flex items-center gap-3 pt-4 border-t border-border", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold text-primary", children: t.name.charAt(0) }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-foreground truncate", children: t.name }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground truncate", children: t.role })
+            ] })
+          ] })
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(AnimatePresence, { children: menuPos && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      ContextMenu,
+      {
+        x: menuPos.x,
+        y: menuPos.y,
+        onEdit: () => onEdit(t),
+        onDelete: () => onDelete(t),
+        onClose: () => {
+          setMenuPos(null);
+          didLongPress.current = false;
+        }
+      }
+    ) })
+  ] });
+}
+function Carousel({ testimonials, onEdit, onDelete }) {
   const [idx, setIdx] = reactExports.useState(0);
   const timer = reactExports.useRef(null);
   const start = reactExports.useCallback(() => {
@@ -37811,7 +38590,9 @@ function Carousel({ testimonials }) {
       TestimonialCard,
       {
         testimonial: t,
-        index: safeIdx * perPage + i
+        index: safeIdx * perPage + i,
+        onEdit,
+        onDelete
       },
       String(t.id)
     )) }) }),
@@ -37880,7 +38661,7 @@ function ThankYouModal({ onClose }) {
                 onClick: onClose,
                 "aria-label": "Close",
                 "data-ocid": "testimonials.thankyou_modal.close_button",
-                className: "absolute top-4 right-4 w-8 h-8 rounded-full bg-muted flex items-center justify-center hover:bg-border transition-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                className: "absolute top-4 right-4 w-8 h-8 rounded-full bg-muted flex items-center justify-center hover:bg-border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-4 h-4 text-muted-foreground" })
               }
             ),
@@ -37976,7 +38757,7 @@ function ThankYouModal({ onClose }) {
                 type: "button",
                 onClick: onClose,
                 "data-ocid": "testimonials.thankyou_modal.confirm_button",
-                className: "px-6 py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm btn-shimmer transition-smooth hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                className: "px-6 py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 children: "Close"
               }
             )
@@ -38009,17 +38790,21 @@ function SubmitForm({ onSubmit, isSubmitting }) {
       setErrors(errs);
       return;
     }
-    await onSubmit(name.trim(), role.trim(), content.trim(), BigInt(rating));
-    setShowModal(true);
-    setName("");
-    setRole("");
-    setContent("");
-    setRating(0);
-    setErrors({});
+    try {
+      await onSubmit(name.trim(), role.trim(), content.trim(), BigInt(rating));
+      setShowModal(true);
+      setName("");
+      setRole("");
+      setContent("");
+      setRating(0);
+      setErrors({});
+    } catch {
+      ue.error("Could not submit your review. Please try again.");
+    }
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(AnimatePresence, { children: showModal && /* @__PURE__ */ jsxRuntimeExports.jsx(ThankYouModal, { onClose: () => setShowModal(false) }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-2xl mx-auto bg-card rounded-2xl border border-border shadow-xs overflow-hidden", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-2xl mx-auto bg-card rounded-2xl border border-border shadow-sm overflow-hidden", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-primary/8 border-b border-border px-6 sm:px-8 py-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold uppercase tracking-widest text-primary", children: "Share Your Experience" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-xl sm:text-2xl font-bold text-foreground mt-1", children: "Leave a Review" }),
@@ -38184,7 +38969,7 @@ function SubmitForm({ onSubmit, isSubmitting }) {
                 type: "submit",
                 disabled: isSubmitting,
                 "data-ocid": "testimonials.submit_button",
-                className: "w-full sm:w-auto px-7 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm btn-shimmer transition-smooth hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lifted disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                className: "w-full sm:w-auto px-7 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm transition-colors hover:opacity-90 hover:-translate-y-0.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 children: isSubmitting ? "Submitting…" : "Submit Review"
               }
             ) })
@@ -38197,6 +38982,8 @@ function SubmitForm({ onSubmit, isSubmitting }) {
 function TestimonialsSection() {
   const { actor, isFetching: actorLoading } = useBackendActor();
   const queryClient2 = useQueryClient();
+  const [editTarget, setEditTarget] = reactExports.useState(null);
+  const [deleteTarget, setDeleteTarget] = reactExports.useState(null);
   const {
     data: testimonials = [],
     isLoading,
@@ -38205,9 +38992,11 @@ function TestimonialsSection() {
     queryKey: ["testimonials"],
     queryFn: async () => {
       if (!actor) return [];
-      return actor.getTestimonials();
+      const result = await actor.getTestimonials();
+      return result;
     },
-    enabled: !!actor && !actorLoading
+    enabled: !!actor && !actorLoading,
+    refetchOnWindowFocus: false
   });
   const submitMutation = useMutation({
     mutationFn: async ({
@@ -38221,98 +39010,182 @@ function TestimonialsSection() {
     },
     onSuccess: () => {
       queryClient2.invalidateQueries({ queryKey: ["testimonials"] });
+    },
+    onError: () => {
+      ue.error("Could not submit your review. Please try again.");
+    }
+  });
+  const editMutation = useMutation({
+    mutationFn: async ({
+      id: id2,
+      name,
+      role,
+      content,
+      rating
+    }) => {
+      if (!actor) throw new Error("Actor not ready");
+      const ok = await actor.editTestimonial(id2, name, role, content, rating);
+      if (!ok) throw new Error("Edit not permitted");
+      return ok;
+    },
+    onSuccess: () => {
+      queryClient2.invalidateQueries({ queryKey: ["testimonials"] });
+      setEditTarget(null);
+      ue.success("Review updated successfully.");
+    },
+    onError: () => {
+      ue.error("Could not update the review. Please try again.");
+      setEditTarget(null);
+    }
+  });
+  const deleteMutation = useMutation({
+    mutationFn: async (id2) => {
+      if (!actor) throw new Error("Actor not ready");
+      const ok = await actor.deleteTestimonial(id2);
+      if (!ok) throw new Error("Delete not permitted");
+      return ok;
+    },
+    onSuccess: () => {
+      queryClient2.invalidateQueries({ queryKey: ["testimonials"] });
+      setDeleteTarget(null);
+      ue.success("Review deleted.");
+    },
+    onError: () => {
+      ue.error("Could not delete the review. Please try again.");
+      setDeleteTarget(null);
     }
   });
   async function handleSubmit(name, role, content, rating) {
     await submitMutation.mutateAsync({ name, role, content, rating });
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+  async function handleEdit(name, role, content, rating) {
+    if (!editTarget) return;
+    await editMutation.mutateAsync({
+      id: editTarget.id,
+      name,
+      role,
+      content,
+      rating
+    });
+  }
+  async function handleDelete() {
+    if (!deleteTarget) return;
+    await deleteMutation.mutateAsync(deleteTarget.id);
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "section",
     {
       id: "testimonials",
       "data-ocid": "testimonials.section",
       className: "section-white section-padding",
-      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "container-wide px-4 sm:px-6 lg:px-8 mx-auto max-w-6xl", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          motion.div,
-          {
-            initial: { opacity: 0, y: 20 },
-            whileInView: { opacity: 1, y: 0 },
-            viewport: { once: true },
-            transition: { duration: 0.6 },
-            className: "text-center mb-14",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold uppercase tracking-widest text-primary", children: "Student Stories" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-display text-3xl sm:text-4xl font-bold text-foreground mt-2", children: "Testimonials" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mt-3 max-w-xl mx-auto", children: "Real feedback from students, parents, and schools who experienced the transformation." })
-            ]
-          }
-        ),
-        isLoading || actorLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "div",
-          {
-            "data-ocid": "testimonials.loading_state",
-            className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6",
-            children: [1, 2, 3].map((i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "div",
-              {
-                className: "bg-card rounded-2xl border border-border p-6 space-y-4 animate-pulse",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-1", children: [1, 2, 3, 4, 5].map((s2) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-3.5 h-3.5 rounded bg-muted" }, s2)) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-3 bg-muted rounded w-full" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-3 bg-muted rounded w-5/6" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-3 bg-muted rounded w-4/6" })
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-3 pt-4 border-t border-border", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-9 h-9 rounded-full bg-muted" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5 flex-1", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-3 bg-muted rounded w-1/2" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-2.5 bg-muted rounded w-1/3" })
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "container-wide px-4 sm:px-6 lg:px-8 mx-auto max-w-6xl", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            motion.div,
+            {
+              initial: { opacity: 0, y: 20 },
+              whileInView: { opacity: 1, y: 0 },
+              viewport: { once: true },
+              transition: { duration: 0.6 },
+              className: "text-center mb-14",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold uppercase tracking-widest text-primary", children: "Student Stories" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-display text-3xl sm:text-4xl font-bold text-foreground mt-2", children: "Testimonials" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mt-3 max-w-xl mx-auto", children: "Real feedback from students, parents, and schools who experienced the transformation." })
+              ]
+            }
+          ),
+          isLoading || actorLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "div",
+            {
+              "data-ocid": "testimonials.loading_state",
+              className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6",
+              children: [1, 2, 3].map((i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "div",
+                {
+                  className: "bg-card rounded-2xl border border-border p-6 space-y-4 animate-pulse",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-1", children: [1, 2, 3, 4, 5].map((s2) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-3.5 h-3.5 rounded bg-muted" }, s2)) }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-3 bg-muted rounded w-full" }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-3 bg-muted rounded w-5/6" }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-3 bg-muted rounded w-4/6" })
+                    ] }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-3 pt-4 border-t border-border", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-9 h-9 rounded-full bg-muted" }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1.5 flex-1", children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-3 bg-muted rounded w-1/2" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-2.5 bg-muted rounded w-1/3" })
+                      ] })
                     ] })
-                  ] })
-                ]
-              },
-              i
-            ))
-          }
-        ) : isError ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "div",
+                  ]
+                },
+                i
+              ))
+            }
+          ) : isError ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "div",
+            {
+              "data-ocid": "testimonials.error_state",
+              className: "text-center py-12",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground text-sm", children: "Unable to load reviews right now. Please refresh the page." })
+            }
+          ) : testimonials.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "div",
+            {
+              "data-ocid": "testimonials.empty_state",
+              className: "text-center py-12",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { className: "w-6 h-6 text-primary" }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-foreground font-semibold mb-1", children: "No reviews yet" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground text-sm", children: "Be the first to share your experience!" })
+              ]
+            }
+          ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Carousel,
+            {
+              testimonials,
+              onEdit: setEditTarget,
+              onDelete: setDeleteTarget
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            motion.div,
+            {
+              initial: { opacity: 0, y: 28 },
+              whileInView: { opacity: 1, y: 0 },
+              viewport: { once: true },
+              transition: { duration: 0.65, ease: "easeOut" },
+              className: "mt-16",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                SubmitForm,
+                {
+                  onSubmit: handleSubmit,
+                  isSubmitting: submitMutation.isPending
+                }
+              )
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(AnimatePresence, { children: editTarget && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          EditModal,
           {
-            "data-ocid": "testimonials.error_state",
-            className: "text-center py-12",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground text-sm", children: "Unable to load reviews right now. Please refresh the page." })
+            testimonial: editTarget,
+            onSave: handleEdit,
+            onClose: () => setEditTarget(null),
+            isSaving: editMutation.isPending
           }
-        ) : testimonials.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
+        ) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(AnimatePresence, { children: deleteTarget && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          DeleteConfirmDialog,
           {
-            "data-ocid": "testimonials.empty_state",
-            className: "text-center py-12",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { className: "w-6 h-6 text-primary" }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-foreground font-semibold mb-1", children: "No reviews yet" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground text-sm", children: "Be the first to share your experience!" })
-            ]
+            testimonialName: deleteTarget.name,
+            onConfirm: handleDelete,
+            onCancel: () => setDeleteTarget(null),
+            isDeleting: deleteMutation.isPending
           }
-        ) : /* @__PURE__ */ jsxRuntimeExports.jsx(Carousel, { testimonials }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          motion.div,
-          {
-            initial: { opacity: 0, y: 28 },
-            whileInView: { opacity: 1, y: 0 },
-            viewport: { once: true },
-            transition: { duration: 0.65, ease: "easeOut" },
-            className: "mt-16",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              SubmitForm,
-              {
-                onSubmit: handleSubmit,
-                isSubmitting: submitMutation.isPending
-              }
-            )
-          }
-        )
-      ] })
+        ) })
+      ]
     }
   );
 }

@@ -1,8 +1,9 @@
 import { useActor } from "@caffeineai/core-infrastructure";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Star, X } from "lucide-react";
+import { Pencil, Star, Trash2, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import { createActor } from "../backend";
 import type { Testimonial } from "../backend";
 
@@ -67,52 +68,558 @@ function StarPicker({
   );
 }
 
-// ─── Testimonial card ─────────────────────────────────────────────────────────
+// ─── Context menu overlay ─────────────────────────────────────────────────────
+
+interface ContextMenuProps {
+  x: number;
+  y: number;
+  onEdit: () => void;
+  onDelete: () => void;
+  onClose: () => void;
+}
+
+function ContextMenu({ x, y, onEdit, onDelete, onClose }: ContextMenuProps) {
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    }
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    function handleScroll() {
+      onClose();
+    }
+    // Use a small delay so the mouseup that ends the long-press doesn't
+    // immediately register as "click outside"
+    const timeout = setTimeout(() => {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener(
+        "touchstart",
+        handleClickOutside as unknown as EventListener,
+      );
+    }, 50);
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("scroll", handleScroll, true);
+    return () => {
+      clearTimeout(timeout);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener(
+        "touchstart",
+        handleClickOutside as unknown as EventListener,
+      );
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("scroll", handleScroll, true);
+    };
+  }, [onClose]);
+
+  const menuW = 168;
+  const menuH = 100;
+  const safeX = Math.min(x, window.innerWidth - menuW - 8);
+  const safeY = Math.min(y, window.innerHeight - menuH - 8);
+
+  return (
+    <motion.div
+      ref={menuRef}
+      data-ocid="testimonials.dropdown_menu"
+      initial={{ opacity: 0, scale: 0.88, y: -6 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.88, y: -6 }}
+      transition={{ duration: 0.15, ease: "easeOut" }}
+      style={{ position: "fixed", left: safeX, top: safeY, zIndex: 9999 }}
+      className="bg-card border border-border rounded-xl shadow-[0_8px_32px_-4px_rgba(0,0,0,0.18)] overflow-hidden min-w-[168px]"
+    >
+      <button
+        type="button"
+        data-ocid="testimonials.edit_button"
+        onClick={() => {
+          onEdit();
+          onClose();
+        }}
+        className="flex items-center gap-2.5 w-full px-4 py-3 text-sm text-foreground hover:bg-primary/10 transition-colors duration-150 focus-visible:outline-none focus-visible:bg-primary/10"
+      >
+        <Pencil className="w-4 h-4 text-primary flex-shrink-0" />
+        Edit Review
+      </button>
+      <div className="h-px bg-border mx-3" />
+      <button
+        type="button"
+        data-ocid="testimonials.delete_button"
+        onClick={() => {
+          onDelete();
+          onClose();
+        }}
+        className="flex items-center gap-2.5 w-full px-4 py-3 text-sm text-destructive hover:bg-destructive/10 transition-colors duration-150 focus-visible:outline-none focus-visible:bg-destructive/10"
+      >
+        <Trash2 className="w-4 h-4 flex-shrink-0" />
+        Delete Review
+      </button>
+    </motion.div>
+  );
+}
+
+// ─── Delete confirmation dialog ───────────────────────────────────────────────
+
+interface DeleteConfirmProps {
+  testimonialName: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+  isDeleting: boolean;
+}
+
+function DeleteConfirmDialog({
+  testimonialName,
+  onConfirm,
+  onCancel,
+  isDeleting,
+}: DeleteConfirmProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-foreground/30 backdrop-blur-sm"
+      onClick={onCancel}
+      data-ocid="testimonials.dialog"
+    >
+      <motion.div
+        initial={{ scale: 0.88, y: 16, opacity: 0 }}
+        animate={{ scale: 1, y: 0, opacity: 1 }}
+        exit={{ scale: 0.88, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 320, damping: 24 }}
+        onClick={(e) => e.stopPropagation()}
+        className="bg-card rounded-2xl border border-border shadow-[0_20px_60px_-10px_rgba(0,0,0,0.22)] p-7 max-w-sm w-full"
+      >
+        <div className="flex items-start gap-4 mb-5">
+          <div className="w-10 h-10 rounded-full bg-destructive/12 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <Trash2 className="w-5 h-5 text-destructive" />
+          </div>
+          <div className="min-w-0">
+            <h3 className="font-display text-base font-bold text-foreground mb-1">
+              Delete this review?
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              You're about to permanently delete the review by{" "}
+              <span className="font-semibold text-foreground">
+                {testimonialName}
+              </span>
+              . This cannot be undone.
+            </p>
+          </div>
+        </div>
+        <div className="flex gap-3 justify-end">
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={isDeleting}
+            data-ocid="testimonials.cancel_button"
+            className="px-4 py-2 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors disabled:opacity-50"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            disabled={isDeleting}
+            data-ocid="testimonials.confirm_button"
+            className="px-4 py-2 rounded-lg bg-destructive text-destructive-foreground text-sm font-semibold hover:opacity-90 transition-colors disabled:opacity-60"
+          >
+            {isDeleting ? "Deleting…" : "Delete"}
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// ─── Edit modal ───────────────────────────────────────────────────────────────
+
+interface EditModalProps {
+  testimonial: Testimonial;
+  onSave: (
+    name: string,
+    role: string,
+    content: string,
+    rating: bigint,
+  ) => Promise<void>;
+  onClose: () => void;
+  isSaving: boolean;
+}
+
+function EditModal({ testimonial, onSave, onClose, isSaving }: EditModalProps) {
+  const [name, setName] = useState(testimonial.name);
+  const [role, setRole] = useState(testimonial.role);
+  const [content, setContent] = useState(testimonial.content);
+  const [rating, setRating] = useState(Number(testimonial.rating));
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  function validate() {
+    const e: Record<string, string> = {};
+    if (!name.trim()) e.name = "Name is required.";
+    if (!role.trim()) e.role = "Role is required.";
+    if (!content.trim() || content.trim().length < 10)
+      e.content = "Review must be at least 10 characters.";
+    if (rating === 0) e.rating = "Please select a rating.";
+    return e;
+  }
+
+  async function handleSave(e: React.FormEvent) {
+    e.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    await onSave(name.trim(), role.trim(), content.trim(), BigInt(rating));
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-foreground/30 backdrop-blur-sm"
+      onClick={onClose}
+      data-ocid="testimonials.dialog"
+    >
+      <motion.div
+        initial={{ scale: 0.88, y: 20, opacity: 0 }}
+        animate={{ scale: 1, y: 0, opacity: 1 }}
+        exit={{ scale: 0.88, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 24 }}
+        onClick={(e) => e.stopPropagation()}
+        className="bg-card rounded-2xl border border-border shadow-[0_20px_60px_-10px_rgba(45,80,22,0.22)] w-full max-w-lg overflow-hidden"
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-border bg-primary/5">
+          <div className="flex items-center gap-2.5">
+            <Pencil className="w-4 h-4 text-primary" />
+            <h3 className="font-display text-base font-bold text-foreground">
+              Edit Review
+            </h3>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            data-ocid="testimonials.close_button"
+            className="w-8 h-8 rounded-full bg-muted flex items-center justify-center hover:bg-border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <X className="w-4 h-4 text-muted-foreground" />
+          </button>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSave} noValidate className="px-6 py-6 space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="edit-name"
+                className="text-sm font-semibold text-foreground"
+              >
+                Name <span className="text-primary">*</span>
+              </label>
+              <input
+                id="edit-name"
+                type="text"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  if (errors.name) setErrors((p) => ({ ...p, name: "" }));
+                }}
+                data-ocid="testimonials.name_input"
+                className={`w-full rounded-lg border ${errors.name ? "border-destructive" : "border-input"} bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors`}
+              />
+              {errors.name && (
+                <p
+                  className="text-xs text-destructive"
+                  data-ocid="testimonials.name.field_error"
+                >
+                  {errors.name}
+                </p>
+              )}
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="edit-role"
+                className="text-sm font-semibold text-foreground"
+              >
+                Role <span className="text-primary">*</span>
+              </label>
+              <input
+                id="edit-role"
+                type="text"
+                value={role}
+                onChange={(e) => {
+                  setRole(e.target.value);
+                  if (errors.role) setErrors((p) => ({ ...p, role: "" }));
+                }}
+                data-ocid="testimonials.role_input"
+                className={`w-full rounded-lg border ${errors.role ? "border-destructive" : "border-input"} bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors`}
+              />
+              {errors.role && (
+                <p
+                  className="text-xs text-destructive"
+                  data-ocid="testimonials.role.field_error"
+                >
+                  {errors.role}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label
+              htmlFor="edit-content"
+              className="text-sm font-semibold text-foreground"
+            >
+              Review <span className="text-primary">*</span>
+            </label>
+            <textarea
+              id="edit-content"
+              value={content}
+              onChange={(e) => {
+                setContent(e.target.value);
+                if (errors.content) setErrors((p) => ({ ...p, content: "" }));
+              }}
+              rows={4}
+              data-ocid="testimonials.review_textarea"
+              className={`w-full rounded-lg border ${errors.content ? "border-destructive" : "border-input"} bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors resize-none`}
+            />
+            {errors.content && (
+              <p
+                className="text-xs text-destructive"
+                data-ocid="testimonials.review.field_error"
+              >
+                {errors.content}
+              </p>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <p className="text-sm font-semibold text-foreground">
+              Rating <span className="text-primary">*</span>
+            </p>
+            <StarPicker
+              value={rating}
+              onChange={(n) => {
+                setRating(n);
+                if (errors.rating) setErrors((p) => ({ ...p, rating: "" }));
+              }}
+            />
+            {errors.rating && (
+              <p
+                className="text-xs text-destructive"
+                data-ocid="testimonials.rating.field_error"
+              >
+                {errors.rating}
+              </p>
+            )}
+          </div>
+
+          <div className="flex gap-3 justify-end pt-2">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={isSaving}
+              data-ocid="testimonials.cancel_button"
+              className="px-4 py-2.5 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isSaving}
+              data-ocid="testimonials.save_button"
+              className="px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-colors disabled:opacity-60"
+            >
+              {isSaving ? "Saving…" : "Save Changes"}
+            </button>
+          </div>
+        </form>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// ─── Testimonial card with long-press ─────────────────────────────────────────
+
+interface TestimonialCardProps {
+  testimonial: Testimonial;
+  index: number;
+  onEdit: (t: Testimonial) => void;
+  onDelete: (t: Testimonial) => void;
+}
 
 function TestimonialCard({
   testimonial: t,
   index,
-}: {
-  testimonial: Testimonial;
-  index: number;
-}) {
+  onEdit,
+  onDelete,
+}: TestimonialCardProps) {
+  const [menuPos, setMenuPos] = useState<{ x: number; y: number } | null>(null);
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const didLongPress = useRef(false);
+  const pressCoords = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  function openMenu(x: number, y: number) {
+    setMenuPos({ x, y });
+    // Provide haptic feedback on mobile if available
+    if (navigator.vibrate) navigator.vibrate(30);
+  }
+
+  function clearTimer() {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  }
+
+  // Desktop: right-click context menu
+  function handleContextMenu(e: React.MouseEvent) {
+    e.preventDefault();
+    didLongPress.current = true;
+    openMenu(e.clientX, e.clientY);
+  }
+
+  // Touch: 500ms long-press
+  function handleTouchStart(e: React.TouchEvent) {
+    didLongPress.current = false;
+    const touch = e.touches[0];
+    pressCoords.current = { x: touch.clientX, y: touch.clientY };
+    longPressTimer.current = setTimeout(() => {
+      didLongPress.current = true;
+      openMenu(touch.clientX, touch.clientY);
+    }, 500);
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    clearTimer();
+    // Prevent the synthetic click from firing after a long-press
+    if (didLongPress.current) {
+      e.preventDefault();
+    }
+  }
+
+  function handleTouchMove(e: React.TouchEvent) {
+    const touch = e.touches[0];
+    const dx = Math.abs(touch.clientX - pressCoords.current.x);
+    const dy = Math.abs(touch.clientY - pressCoords.current.y);
+    // Cancel if moved more than 10px
+    if (dx > 10 || dy > 10) clearTimer();
+  }
+
+  function handleTouchCancel() {
+    clearTimer();
+    didLongPress.current = false;
+  }
+
+  // Desktop mouse long-press (500ms hold)
+  function handleMouseDown(e: React.MouseEvent) {
+    if (e.button !== 0) return;
+    didLongPress.current = false;
+    pressCoords.current = { x: e.clientX, y: e.clientY };
+    const { clientX, clientY } = e;
+    longPressTimer.current = setTimeout(() => {
+      didLongPress.current = true;
+      openMenu(clientX, clientY);
+    }, 500);
+  }
+
+  function handleMouseUp() {
+    clearTimer();
+  }
+
+  function handleMouseMove(e: React.MouseEvent) {
+    const dx = Math.abs(e.clientX - pressCoords.current.x);
+    const dy = Math.abs(e.clientY - pressCoords.current.y);
+    // Cancel if mouse drifted more than 10px
+    if (dx > 10 || dy > 10) clearTimer();
+  }
+
+  function handleMouseLeave() {
+    clearTimer();
+  }
+
   return (
-    <motion.div
-      data-ocid={`testimonials.item.${index + 1}`}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{
-        duration: 0.55,
-        ease: "easeOut",
-        delay: Math.min(index, 5) * 0.07,
-      }}
-      className="bg-card rounded-2xl border border-border p-6 shadow-xs hover-lift flex flex-col"
-    >
-      <StarDisplay rating={t.rating} />
-      <p className="text-sm text-muted-foreground leading-relaxed mt-4 flex-1">
-        &ldquo;{t.content}&rdquo;
-      </p>
-      <div className="mt-5 flex items-center gap-3 pt-4 border-t border-border">
-        <div className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0">
-          <span className="text-sm font-bold text-primary">
-            {t.name.charAt(0)}
-          </span>
+    <>
+      <motion.div
+        data-ocid={`testimonials.item.${index + 1}`}
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{
+          duration: 0.55,
+          ease: "easeOut",
+          delay: Math.min(index, 5) * 0.07,
+        }}
+        onContextMenu={handleContextMenu}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onTouchMove={handleTouchMove}
+        onTouchCancel={handleTouchCancel}
+        className="bg-card rounded-2xl border border-border p-6 shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col cursor-default select-none relative group"
+        title="Long-press or right-click to manage"
+      >
+        {/* Subtle hint dot — visible on hover only */}
+        <div
+          aria-hidden="true"
+          className="absolute top-3 right-3 w-1.5 h-1.5 rounded-full bg-primary/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        />
+
+        <StarDisplay rating={t.rating} />
+        <p className="text-sm text-muted-foreground leading-relaxed mt-4 flex-1">
+          &ldquo;{t.content}&rdquo;
+        </p>
+        <div className="mt-5 flex items-center gap-3 pt-4 border-t border-border">
+          <div className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0">
+            <span className="text-sm font-bold text-primary">
+              {t.name.charAt(0)}
+            </span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-semibold text-foreground truncate">
+              {t.name}
+            </p>
+            <p className="text-xs text-muted-foreground truncate">{t.role}</p>
+          </div>
         </div>
-        <div className="min-w-0">
-          <p className="text-sm font-semibold text-foreground truncate">
-            {t.name}
-          </p>
-          <p className="text-xs text-muted-foreground truncate">{t.role}</p>
-        </div>
-      </div>
-    </motion.div>
+      </motion.div>
+
+      <AnimatePresence>
+        {menuPos && (
+          <ContextMenu
+            x={menuPos.x}
+            y={menuPos.y}
+            onEdit={() => onEdit(t)}
+            onDelete={() => onDelete(t)}
+            onClose={() => {
+              setMenuPos(null);
+              didLongPress.current = false;
+            }}
+          />
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
 // ─── Carousel ─────────────────────────────────────────────────────────────────
 
-function Carousel({ testimonials }: { testimonials: Testimonial[] }) {
+interface CarouselProps {
+  testimonials: Testimonial[];
+  onEdit: (t: Testimonial) => void;
+  onDelete: (t: Testimonial) => void;
+}
+
+function Carousel({ testimonials, onEdit, onDelete }: CarouselProps) {
   const [idx, setIdx] = useState(0);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -147,6 +654,8 @@ function Carousel({ testimonials }: { testimonials: Testimonial[] }) {
               key={String(t.id)}
               testimonial={t}
               index={safeIdx * perPage + i}
+              onEdit={onEdit}
+              onDelete={onDelete}
             />
           ))}
         </AnimatePresence>
@@ -229,7 +738,7 @@ function ThankYouModal({ onClose }: { onClose: () => void }) {
           onClick={onClose}
           aria-label="Close"
           data-ocid="testimonials.thankyou_modal.close_button"
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-muted flex items-center justify-center hover:bg-border transition-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-muted flex items-center justify-center hover:bg-border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <X className="w-4 h-4 text-muted-foreground" />
         </button>
@@ -319,7 +828,7 @@ function ThankYouModal({ onClose }: { onClose: () => void }) {
           type="button"
           onClick={onClose}
           data-ocid="testimonials.thankyou_modal.confirm_button"
-          className="px-6 py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm btn-shimmer transition-smooth hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="px-6 py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           Close
         </motion.button>
@@ -365,13 +874,18 @@ function SubmitForm({ onSubmit, isSubmitting }: SubmitFormProps) {
       setErrors(errs);
       return;
     }
-    await onSubmit(name.trim(), role.trim(), content.trim(), BigInt(rating));
-    setShowModal(true);
-    setName("");
-    setRole("");
-    setContent("");
-    setRating(0);
-    setErrors({});
+    try {
+      await onSubmit(name.trim(), role.trim(), content.trim(), BigInt(rating));
+      // Only show thank-you and reset on success
+      setShowModal(true);
+      setName("");
+      setRole("");
+      setContent("");
+      setRating(0);
+      setErrors({});
+    } catch {
+      toast.error("Could not submit your review. Please try again.");
+    }
   }
 
   return (
@@ -380,7 +894,7 @@ function SubmitForm({ onSubmit, isSubmitting }: SubmitFormProps) {
         {showModal && <ThankYouModal onClose={() => setShowModal(false)} />}
       </AnimatePresence>
 
-      <div className="max-w-2xl mx-auto bg-card rounded-2xl border border-border shadow-xs overflow-hidden">
+      <div className="max-w-2xl mx-auto bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
         <div className="bg-primary/8 border-b border-border px-6 sm:px-8 py-6">
           <span className="text-xs font-semibold uppercase tracking-widest text-primary">
             Share Your Experience
@@ -534,7 +1048,7 @@ function SubmitForm({ onSubmit, isSubmitting }: SubmitFormProps) {
                 type="submit"
                 disabled={isSubmitting}
                 data-ocid="testimonials.submit_button"
-                className="w-full sm:w-auto px-7 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm btn-shimmer transition-smooth hover:opacity-90 hover:-translate-y-0.5 hover:shadow-lifted disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="w-full sm:w-auto px-7 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-sm transition-colors hover:opacity-90 hover:-translate-y-0.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 {isSubmitting ? "Submitting…" : "Submit Review"}
               </button>
@@ -552,6 +1066,9 @@ export function TestimonialsSection() {
   const { actor, isFetching: actorLoading } = useBackendActor();
   const queryClient = useQueryClient();
 
+  const [editTarget, setEditTarget] = useState<Testimonial | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Testimonial | null>(null);
+
   const {
     data: testimonials = [],
     isLoading,
@@ -560,9 +1077,11 @@ export function TestimonialsSection() {
     queryKey: ["testimonials"],
     queryFn: async () => {
       if (!actor) return [];
-      return actor.getTestimonials();
+      const result = await actor.getTestimonials();
+      return result;
     },
     enabled: !!actor && !actorLoading,
+    refetchOnWindowFocus: false,
   });
 
   const submitMutation = useMutation({
@@ -583,6 +1102,57 @@ export function TestimonialsSection() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["testimonials"] });
     },
+    onError: () => {
+      toast.error("Could not submit your review. Please try again.");
+    },
+  });
+
+  const editMutation = useMutation({
+    mutationFn: async ({
+      id,
+      name,
+      role,
+      content,
+      rating,
+    }: {
+      id: bigint;
+      name: string;
+      role: string;
+      content: string;
+      rating: bigint;
+    }) => {
+      if (!actor) throw new Error("Actor not ready");
+      const ok = await actor.editTestimonial(id, name, role, content, rating);
+      if (!ok) throw new Error("Edit not permitted");
+      return ok;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["testimonials"] });
+      setEditTarget(null);
+      toast.success("Review updated successfully.");
+    },
+    onError: () => {
+      toast.error("Could not update the review. Please try again.");
+      setEditTarget(null);
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: bigint) => {
+      if (!actor) throw new Error("Actor not ready");
+      const ok = await actor.deleteTestimonial(id);
+      if (!ok) throw new Error("Delete not permitted");
+      return ok;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["testimonials"] });
+      setDeleteTarget(null);
+      toast.success("Review deleted.");
+    },
+    onError: () => {
+      toast.error("Could not delete the review. Please try again.");
+      setDeleteTarget(null);
+    },
   });
 
   async function handleSubmit(
@@ -592,6 +1162,27 @@ export function TestimonialsSection() {
     rating: bigint,
   ) {
     await submitMutation.mutateAsync({ name, role, content, rating });
+  }
+
+  async function handleEdit(
+    name: string,
+    role: string,
+    content: string,
+    rating: bigint,
+  ) {
+    if (!editTarget) return;
+    await editMutation.mutateAsync({
+      id: editTarget.id,
+      name,
+      role,
+      content,
+      rating,
+    });
+  }
+
+  async function handleDelete() {
+    if (!deleteTarget) return;
+    await deleteMutation.mutateAsync(deleteTarget.id);
   }
 
   return (
@@ -675,7 +1266,11 @@ export function TestimonialsSection() {
             </p>
           </div>
         ) : (
-          <Carousel testimonials={testimonials} />
+          <Carousel
+            testimonials={testimonials}
+            onEdit={setEditTarget}
+            onDelete={setDeleteTarget}
+          />
         )}
 
         {/* Submission form */}
@@ -692,6 +1287,30 @@ export function TestimonialsSection() {
           />
         </motion.div>
       </div>
+
+      {/* Edit modal */}
+      <AnimatePresence>
+        {editTarget && (
+          <EditModal
+            testimonial={editTarget}
+            onSave={handleEdit}
+            onClose={() => setEditTarget(null)}
+            isSaving={editMutation.isPending}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Delete confirmation */}
+      <AnimatePresence>
+        {deleteTarget && (
+          <DeleteConfirmDialog
+            testimonialName={deleteTarget.name}
+            onConfirm={handleDelete}
+            onCancel={() => setDeleteTarget(null)}
+            isDeleting={deleteMutation.isPending}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }

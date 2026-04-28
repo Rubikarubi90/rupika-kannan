@@ -102,10 +102,7 @@ export interface Testimonial {
 export interface backendInterface {
     deleteTestimonial(id: TestimonialId): Promise<boolean>;
     editTestimonial(id: TestimonialId, name: string, role: string, content: string, rating: bigint): Promise<boolean>;
-    getAdmin(): Promise<Principal | null>;
     getTestimonials(): Promise<Array<Testimonial>>;
-    isAdmin(): Promise<boolean>;
-    setAdmin(): Promise<void>;
     submitTestimonial(name: string, role: string, content: string, rating: bigint): Promise<TestimonialId>;
 }
 export class Backend implements backendInterface {
@@ -138,20 +135,6 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async getAdmin(): Promise<Principal | null> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.getAdmin();
-                return from_candid_opt_n1(this._uploadFile, this._downloadFile, result);
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.getAdmin();
-            return from_candid_opt_n1(this._uploadFile, this._downloadFile, result);
-        }
-    }
     async getTestimonials(): Promise<Array<Testimonial>> {
         if (this.processError) {
             try {
@@ -163,34 +146,6 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.getTestimonials();
-            return result;
-        }
-    }
-    async isAdmin(): Promise<boolean> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.isAdmin();
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.isAdmin();
-            return result;
-        }
-    }
-    async setAdmin(): Promise<void> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.setAdmin();
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.setAdmin();
             return result;
         }
     }
@@ -208,9 +163,6 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-}
-function from_candid_opt_n1(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [Principal]): Principal | null {
-    return value.length === 0 ? null : value[0];
 }
 export interface CreateActorOptions {
     agent?: Agent;

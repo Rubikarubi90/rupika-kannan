@@ -26,10 +26,7 @@ export interface _SERVICE {
     [TestimonialId, string, string, string, bigint],
     boolean
   >,
-  'getAdmin' : ActorMethod<[], [] | [Principal]>,
   'getTestimonials' : ActorMethod<[], Array<Testimonial>>,
-  'isAdmin' : ActorMethod<[], boolean>,
-  'setAdmin' : ActorMethod<[], undefined>,
   'submitTestimonial' : ActorMethod<
     [string, string, string, bigint],
     TestimonialId

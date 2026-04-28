@@ -1,4 +1,4 @@
-import { motion, useInView } from "motion/react";
+import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
 function scrollToSection(id: string) {
@@ -15,31 +15,79 @@ interface CountUpProps {
 
 function CountUp({ target, suffix = "", duration = 2500 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
   const [count, setCount] = useState(0);
   const started = useRef(false);
+  const rafId = useRef<number | null>(null);
 
   useEffect(() => {
-    if (!isInView || started.current) return;
-    started.current = true;
-    const start = Math.min(50, Math.floor(target * 0.08));
-    const startTime = performance.now();
+    const el = ref.current;
+    if (!el) return;
 
-    function update(now: number) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      // easeOutExpo
-      const eased = progress === 1 ? 1 : 1 - 2 ** (-10 * progress);
-      setCount(Math.floor(start + (target - start) * eased));
-      if (progress < 1) requestAnimationFrame(update);
+    function startAnimation() {
+      if (started.current) return;
+      started.current = true;
+
+      const start = Math.min(50, Math.floor(target * 0.08));
+      const startTime = performance.now();
+
+      function update(now: number) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // easeOutExpo
+        const eased = progress === 1 ? 1 : 1 - 2 ** (-10 * progress);
+        const current = Math.floor(start + (target - start) * eased);
+        setCount(current);
+        if (progress < 1) {
+          rafId.current = requestAnimationFrame(update);
+        } else {
+          setCount(target);
+        }
+      }
+
+      rafId.current = requestAnimationFrame(update);
     }
 
-    requestAnimationFrame(update);
-  }, [isInView, target, duration]);
+    // Check if IntersectionObserver is supported
+    if (typeof IntersectionObserver === "undefined") {
+      setCount(target);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting) {
+          observer.disconnect();
+          startAnimation();
+        }
+      },
+      { threshold: 0.1, rootMargin: "0px" },
+    );
+
+    observer.observe(el);
+
+    // Fallback: if already in viewport (e.g. page just loaded), fire immediately
+    const rect = el.getBoundingClientRect();
+    const inView =
+      rect.top < window.innerHeight && rect.bottom > 0 && rect.width > 0;
+    if (inView) {
+      observer.disconnect();
+      startAnimation();
+    }
+
+    return () => {
+      observer.disconnect();
+      if (rafId.current !== null) {
+        cancelAnimationFrame(rafId.current);
+      }
+    };
+  }, [target, duration]);
+
+  const display = count >= target ? target : count;
 
   return (
     <span ref={ref}>
-      {count}
+      {display}
       {suffix}
     </span>
   );

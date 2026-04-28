@@ -3,7 +3,7 @@ import type { Skill } from "../types";
 
 const SKILLS: Skill[] = [
   { id: 1, label: "ESL Activity Design", icon: "🎨" },
-  { id: 2, label: "Phonics Training", icon: "🔤" },
+  { id: 2, label: "Engaging Songs", icon: "🎵" },
   { id: 3, label: "Creative Teaching Methods", icon: "💡" },
   { id: 4, label: "Ice-breaker Activities", icon: "🧊" },
   { id: 5, label: "Fluency Development", icon: "🗣️" },
@@ -14,6 +14,7 @@ const SKILLS: Skill[] = [
   { id: 10, label: "Confidence Building", icon: "🌟" },
   { id: 11, label: "Communication Skills", icon: "💬" },
   { id: 12, label: "School Programs", icon: "📚" },
+  { id: 13, label: "Bulletin Board Designer", icon: "📌" },
 ];
 
 const HIGHLIGHTS = [

@@ -13,10 +13,7 @@ service : {
   deleteTestimonial: (id: TestimonialId) -> (bool);
   editTestimonial: (id: TestimonialId, name: text, role: text, content: 
    text, rating: nat) -> (bool);
-  getAdmin: () -> (opt principal) query;
   getTestimonials: () -> (vec Testimonial) query;
-  isAdmin: () -> (bool) query;
-  setAdmin: () -> ();
   submitTestimonial: (name: text, role: text, content: text, rating: 
    nat) -> (TestimonialId);
 }
